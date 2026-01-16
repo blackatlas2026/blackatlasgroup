@@ -66,10 +66,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="text-center text-sm text-black/50 pb-6">
+      <footer className="text-center text-xs sm:text-sm text-black/50 pb-4 sm:pb-6">
         © {new Date().getFullYear()} Black Atlas. All rights reserved.
       </footer>
+
     </main>
   );
 }
