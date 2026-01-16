@@ -43,28 +43,34 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="flex items-center justify-center px-6 py-24">
-        <div className="max-w-3xl w-full  border border-black/5 rounded-3xl p-12 text-center 
+  <div className="max-w-3xl w-full border border-black/5 rounded-3xl p-12 text-center 
                   opacity-0 animate-[fade-in_1s_ease-in-out_forwards]">
-          <span className="inline-block mb-4 text-2xl font-chamberi font-medium tracking-wide">
-            black atlas
-          </span>
+    <span className="inline-block mb-4 text-2xl font-chamberi font-medium tracking-wide">
+      black atlas
+    </span>
 
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">
-            Something Powerful
-            <br />Is 
-            <span className="font-chamberi text-red-600"> Coming Soon</span>
-          </h1>
+    <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">
+      Something Powerful
+      <br />Is 
+      <span className="font-chamberi text-red-600"> Coming Soon</span>
+    </h1>
 
-          <p className="text-black/70 max-w-xl mx-auto mb-10">
-            We’re working on a refined digital experience.
-            Stay tuned.
-          </p>
+    <p className="text-black/70 max-w-xl mx-auto mb-10">
+      We're working on a refined digital experience.
+      Stay tuned.
+    </p>
 
-          <div className="flex justify-center">
-            <div className="h-[2px] w-20 bg-red-600 rounded-full" />
-          </div>
-        </div>
-      </section>
+    <div className="flex justify-center mb-8">
+      <div className="h-[2px] w-20 bg-red-600 rounded-full" />
+    </div>
+    
+    {/* Phone number in gray */}
+    <p className="text-black/40 text-sm tracking-wide">
+      📞 +91 99616 89970
+    </p>
+  </div>
+</section>
+
 
       <footer className="text-center text-xs sm:text-sm text-black/50 pb-4 sm:pb-6">
         © {new Date().getFullYear()} Black Atlas. All rights reserved.
