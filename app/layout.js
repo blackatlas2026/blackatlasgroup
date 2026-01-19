@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Navbar from "@/app/components/Navbar";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,9 +25,27 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* SVG MASK DEFINITIONS */}
+        {/* <svg className="w-0 h-0" viewBox="0 0 100 100" >
+          <defs>
+            <mask id="mask">
+              <rect fill="#FFFFFF" x="0" y="0" width="100vw" height="100vh"></rect>
+             
+              <circle fill="#000000" cx="1000" cy="410" r="90" />
+              
+             
+              <circle fill="#000000" cx="1000" cy="455" r="100" />
+            </mask>
+          </defs>
+        </svg> */}
+
+
+
+        <Navbar />
         {children}
+        <Footer/>
+        <GoogleAnalytics gaId="G-VPRPK0MD62" />
       </body>
-      <GoogleAnalytics gaId="G-VPRPK0MD62" />
     </html>
   );
 }

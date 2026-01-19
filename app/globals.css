@@ -23,12 +23,7 @@
   /* or make it default: --font-sans: 'Chamberi', ui-sans-serif, system-ui, sans-serif; */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 @font-face {
   font-family: 'Chamberi';
@@ -43,3 +38,52 @@ body {
   color: var(--foreground);
   font-family:  Arial, Helvetica, sans-serif;
 }
+
+
+
+
+
+/* 
+.hero-bg {
+ 
+ 
+
+  -webkit-mask-image: url(#mask);
+  mask-image: url(#mask);
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+} */
+
+/* globals.css or component styles */
+/* globals.css */
+.hero-bg {
+  mask-image: url('/images/mask.png');
+  -webkit-mask-image: url('/images/mask.png');
+  mask-size: contain;
+
+
+
+  -webkit-mask-size: contain;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+
+/* globals.css */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
+ .organic-shape {
+            border-radius: 40px 300px 40px 150px;
+        }
