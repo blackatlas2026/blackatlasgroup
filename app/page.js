@@ -83,7 +83,7 @@ const products = [
 
 export default function Home() {
   return (<div>
-            <Hero2/>
+            <Hero/>
             {/* <ShopByBrand/> */}
             <ShopByBrand2/>
             <FeaturedProducts products={products} />
