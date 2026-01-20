@@ -36,6 +36,7 @@ export default function Hero() {
     <section className="relative py-20 overflow-hidden">
       {/* SVG mask */}
       
+      
       <div className="relative mx-auto max-w-7xl px-6 z-10">
         {/* Height container */}
         <div className="h-[70vh] md:h-[80vh] relative"> 

@@ -20,7 +20,15 @@ export default function ShopByBrand({ brands = [] }) {
   const brandsToShow = brands.length > 0 ? brands : defaultBrands;
 
   return (
-    <section className="w-full bg-white  py-16 lg:py-24">
+    <section className="w-full bg-white relative py-16 lg:py-24">
+    <div className="absolute inset-x-0 top-0 pointer-events-none z-0 opacity-40 dark:opacity-20 pt-0">
+      <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-50,150 C200,50 400,600 600,400 C800,200 1000,750 1250,650" fill="none" stroke="#E11D48" strokeLinecap="round" strokeWidth="1"></path>
+        <path d="M-50,155 C200,50 400,600 600,400 C800,205 1000,755 1250,650" fill="none" stroke="#E11D48" strokeDasharray="4 4" strokeOpacity="0.3" strokeWidth="0.75"></path>
+      </svg>
+    </div>
+
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 lg:mb-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-8">
@@ -45,7 +53,7 @@ export default function ShopByBrand({ brands = [] }) {
           {brandsToShow.map((brand, index) => (
             <div
               key={index}
-              className="group relative h-72 lg:h-80 w-full overflow-hidden rounded-3xl bg-slate-50 px-8 py-12 transition-all duration-500 hover:-translate-y-1"
+              className="group relative h-72 lg:h-84 w-full overflow-hidden rounded-3xl backdrop-blur-xs shadow-lg border border-gray-400/10 bg-white/80 px-8 py-14 transition-all duration-500 hover:-translate-y-1"
             >
               {/* Large background logo */}
               <img
@@ -54,10 +62,9 @@ export default function ShopByBrand({ brands = [] }) {
                 className="
                   pointer-events-none absolute right-[-10%] top-1/2
                   h-[120%] max-w-none -translate-y-1/2
-                  opacity-20 grayscale
+                  opacity-40 
                   transition-all duration-500
-                  group-hover:opacity-40
-                  group-hover:grayscale-0
+                  
                 "
               />
 

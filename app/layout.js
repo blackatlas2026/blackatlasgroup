@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import Navbar from "@/app/components/Navbar";
 import Footer from "./components/Footer";
 import "./globals.css";
@@ -14,6 +15,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+
 export const metadata = {
   title: "Black Atlas Group",
   description: "Coming Soon",
@@ -23,7 +38,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${playfair.variable} antialiased`}
       >
         {/* SVG MASK DEFINITIONS */}
         {/* <svg className="w-0 h-0" viewBox="0 0 100 100" >

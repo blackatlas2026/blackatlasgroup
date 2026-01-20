@@ -1,121 +1,133 @@
-// components/ShopByBrand2.jsx
 "use client";
 
-const mockBrands = [
-  {
-    id: "luxtech",
-    name: "Lux Tech Series",
-    logo: "/brands/logo.png",
-    tagline: "Luxury tech series with sustainable precision",
-    productCount: 128,
-  },
-  {
-    id: "aura",
-    name: "Aura Essential",
-    logo: "/brands/logo.png",
-    tagline: "Sustainable fashion design",
-    productCount: 97,
-  },
-  {
-    id: "puma",
-    name: "Puma",
-    logo: "/brands/logo.png",
-    tagline: "Fast styles on and off track",
-    productCount: 64,
-  },
-  {
-    id: "new-balance",
-    name: "New Balance",
-    logo: "/brands/logo.png",
-    tagline: "Comfort meets everyday style",
-    productCount: 52,
-  },
-];
+export default function ShopByBrand2() {
+  // Mock backend data
+  const brands = [
+    {
+      name: "Brand 1",
+      description:
+        "Premium bio-available formulas for joint health, hair, and skin elasticity.",
+      logo: "/brands/logo.png", // same image used everywhere
+      cta: "Shop Now",
+    },
+    {
+      name: "Brand 2",
+      description:
+        "Electrolyte-balanced supplements designed to sustain you through your fast.",
+      logo: "/brands/logo.png",
+      cta: "Shop Now",
+    },
+  ];
 
-export function ShopByBrand2({ brands = mockBrands, onBrandClick }) {
   return (
-    <section className="w-full bg-gradient-to-b from-slate-50 to-white py-16 lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-12 lg:mb-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <div>
-            <p className="text-sm lg:text-base font-semibold uppercase tracking-widest text-slate-600">
-              Shop by brand
-            </p>
-            <h2 className="mt-3 text-3xl lg:text-4xl font-bold tracking-tight text-slate-900">
-              Find your favorite labels
-            </h2>
-          </div>
-          <button
-            type="button"
-            className="group inline-flex items-center gap-2 text-base font-semibold text-slate-900 hover:text-black transition-colors"
-          >
-            Explore all
-            <svg
-              className="h-5 w-5 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </button>
+    <section className="relative overflow-hidden py-24 px-6 lg:px-12 max-w-7xl mx-auto font-display text-slate-900">
+
+      {/* Decorative SVG */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 1200 600"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M-50 100C150 50 400 350 600 300C800 250 1000 500 1250 450"
+            stroke="#EF4444"
+            strokeWidth="1.5"
+            strokeDasharray="8 8"
+            opacity="0.4"
+          />
+          <path
+            d="M-100 200C100 150 350 450 650 350C950 250 1100 600 1300 500"
+            stroke="#EF4444"
+            strokeWidth="0.75"
+            opacity="0.2"
+          />
+        </svg>
+      </div>
+
+      <div className="absolute top-1/4 left-10 w-3 h-3 bg-red-600 rounded-full opacity-30 animate-pulse" /> <div className="absolute bottom-1/4 right-10 w-4 h-4 bg-red-600 rounded-full opacity-20" /> <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-red-600 rounded-full opacity-40" />
+
+      {/* Header */}
+      <div className="relative z-10 flex flex-col md:flex-row justify-between items-end mb-16">
+        <div className="space-y-2">
+          <span className="text-red-600 font-bold tracking-widest uppercase text-sm">
+            Shop by Brand
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+            Find your favorite labels
+          </h2>
         </div>
 
-        {/* Brand grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {brands.map((brand) => (
-            <button
-              key={brand.id}
-              type="button"
-              onClick={() => onBrandClick && onBrandClick(brand.id)}
-              className="group relative flex h-48 w-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-50/90 to-white/80 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-slate-200 hover:shadow-slate-300/50 hover:shadow-2xl hover:shadow-slate-400/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 lg:h-52"
-            >
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent" />
-              
-              {/* Logo */}
-              <div className="relative z-10 mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r from-slate-100 to-slate-200 shadow-lg group-hover:shadow-slate-300/50">
+        <a
+          href="#"
+          className="group flex items-center gap-2 text-red-600 font-semibold hover:gap-4 transition-all duration-300 mt-6 md:mt-0"
+        >
+          Explore all 
+          <svg className="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+        </a>
+      </div>
+
+      {/* Cards */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {brands.map((brand, index) => (
+          <div
+            key={index}
+            className="group relative overflow-hidden rounded-3xl glass-card border border-slate-100 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+          >
+            {/* Watermark logo */}
+            <img
+              src={brand.logo}
+              alt=""
+              className="
+                pointer-events-none absolute -right-8 -bottom-8 
+                h-[90%] max-w-none
+                opacity-10 grayscale
+                transition-all duration-700
+                group-hover:opacity-20
+                group-hover:grayscale-0
+                group-hover:scale-110
+              "
+            />
+
+            {/* Content */}
+            <div className="relative p-10 lg:p-14 flex flex-col h-full min-h-[400px]">
+              {/* Small logo */}
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-8">
                 <img
                   src={brand.logo}
                   alt={brand.name}
-                  className="h-10 w-10 object-contain"
+                  className="h-8 w-8 object-contain"
                 />
               </div>
 
-              {/* Content */}
-              <div className="relative z-10 mb-6 flex flex-1 flex-col">
-                <h3 className="mb-1 text-lg font-bold text-slate-900 group-hover:text-slate-950">
+              <div className="mt-auto">
+                <h3 className="text-3xl font-bold mb-3">
                   {brand.name}
                 </h3>
-                <p className="text-sm text-slate-600 group-hover:text-slate-700">
-                  {brand.tagline}
+
+                <p className="text-slate-500 max-w-xs mb-8">
+                  {brand.description}
                 </p>
-              </div>
 
-              {/* Product count badge */}
-              <div className="relative z-10 mb-3 flex items-center justify-between">
-                <span className="rounded-full bg-slate-100/80 px-3 py-1.5 text-xs font-semibold text-slate-700 backdrop-blur-sm">
-                  {brand.productCount} items
-                </span>
-              </div>
-
-              {/* Bottom CTA */}
-              <div className="relative z-10 flex items-center gap-2 text-sm text-slate-600 group-hover:text-slate-900">
-                <span className="h-px flex-1 bg-slate-200 group-hover:bg-slate-300 transition-colors" />
-                <span className="font-medium">Explore collection</span>
-                <svg
-                  className="h-4 w-4 flex-shrink-0 transform transition group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 justify-center px-8 py-4 bg-slate-900 text-white font-bold rounded-full transition-all duration-300 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/30"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                  {brand.cta}
+                  <span aria-hidden> →</span>
+                </a>
               </div>
-            </button>
-          ))}
-        </div>
+            </div>
+
+            {/* Accent dot */}
+            <div className="absolute top-10 right-10 w-12 h-12 rounded-full bg-red-600/5 border border-red-600/10 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-red-600" />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

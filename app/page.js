@@ -1,9 +1,10 @@
 import ComingSoon from "@/app/components/ComingSoon";
 import Footer from "./components/Footer";
 import Hero from "./components/home/Hero";
+import Hero2 from "./components/home/Hero2";
 import ShopByBrand from "./components/home/ShopByBrand";
 import FeaturedProducts from "./components/home/FeaturedProducts";
-// import { ShopByBrand2 } from "./components/home/ShopByBrand2";
+import ShopByBrand2  from "./components/home/ShopByBrand2";
 const products = [
   {
     id: "1",
@@ -81,12 +82,14 @@ const products = [
 
 
 export default function Home() {
-  return (<>
-          <Hero/>
-          <ShopByBrand/>
-         
-          <FeaturedProducts products={products} />
+  return (<div>
+            <Hero2/>
+            {/* <ShopByBrand/> */}
+            <ShopByBrand2/>
+            <FeaturedProducts products={products} />
+
+          </div>
           
-          </>
+          
   );
 }

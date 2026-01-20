@@ -1,6 +1,6 @@
 export default function ProductCard({ product }) {
   return (
-    <div className="border border-pink-100 rounded-2xl p-6 flex flex-col items-center bg-white text-center">
+    <div className="border border-pink-100 rounded-2xl p-6 flex flex-col items-center bg-white text-center shadow-xl">
 
       {/* Category */}
       <span className="mb-4 inline-block rounded-full border border-red-500 px-3 py-1 text-xs font-bold tracking-widest text-rose-700">
@@ -36,7 +36,7 @@ export default function ProductCard({ product }) {
 
       {/* CTA */}
       <button className="mt-auto w-full rounded-full bg-black py-3 text-white font-bold">
-        ADD TO CART
+        Buy Now
       </button>
 
     </div>
