@@ -21,7 +21,7 @@ export default function FeaturedProducts({ products }) {
   }
 
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Heading */}
