@@ -10,6 +10,8 @@
   "dependencies": {
     "@next/third-parties": "^16.1.2",
     "alpine": "^0.2.1",
+    "firebase": "^12.8.0",
+    "firebase-admin": "^13.6.0",
     "next": "^16.1.2",
     "rc-slider": "^11.1.9",
     "react": "19.2.3",

@@ -4,6 +4,7 @@ import Hero from "./components/home/Hero";
 import Hero2 from "./components/home/Hero2";
 import ShopByBrand from "./components/home/ShopByBrand";
 import FeaturedProducts from "./components/home/FeaturedProducts";
+import TailwindTest from "./components/TailwindTest";
 import ShopByBrand2  from "./components/home/ShopByBrand2";
 const products = [
   {
@@ -83,8 +84,10 @@ const products = [
 
 export default function Home() {
   return (<div>
+            
+
             <Hero/>
-            {/* <ShopByBrand/> */}
+            
             <ShopByBrand2/>
             <FeaturedProducts products={products} />
 

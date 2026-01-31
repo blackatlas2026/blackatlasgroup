@@ -75,6 +75,7 @@ export const products = [
     brand: "AURASOUND",
     category: "Premium Audio Series",
     name: "Aura Elite Wireless Over-Ear",
+    description: "Experience sonic purity like never before. With advanced active noise cancellation and master-crafted drivers, the Aura Elite delivers studio-quality sound in a sleek, minimalist design.",
     price: 349.99,
     rating: 4.5,
     reviews: 124,
@@ -89,7 +90,7 @@ export const products = [
       ]
     },
     colors: ["#0f172a", "#E5E5E5", "#D4C4A8"],
-    sizes: ["S", "M", "L"],
+    sizes: ["S", "M", "L","XL","XXL"],
     specs: [
       { label: "Driver Type", value: "Electrodynamic, 40mm Titanium" },
       { label: "Battery Life", value: "Up to 38 hours with Bluetooth & ANC" },
