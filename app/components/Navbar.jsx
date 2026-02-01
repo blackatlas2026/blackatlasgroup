@@ -19,6 +19,10 @@ export default function Navbar() {
   const isActive = (href) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+   if (pathname.startsWith("/admin")) {
+    return <div />; // empty div for admin routes
+  }
+
   return (
     <nav className="border-b border-black/10 bg-white/90 backdrop-blur-md sticky top-0 z-50">
       <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
