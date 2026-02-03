@@ -14,10 +14,10 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           {/* Brand */}
           <div>
-            <p className="text-lg font-semibold tracking-wide">
-              Black Atlas
+            <p className="text-2xl font-semibold tracking-wider font-chamberi">
+              black atlas
             </p>
-            <p className="text-sm text-white/60 mt-1">
+            <p className="text-sm text-white/60 mt-0.5">
               Digital products & experiences
             </p>
           </div>

@@ -77,8 +77,7 @@ export const products = [
     name: "Aura Elite Wireless Over-Ear",
     description: "Experience sonic purity like never before. With advanced active noise cancellation and master-crafted drivers, the Aura Elite delivers studio-quality sound in a sleek, minimalist design.",
     price: 349.99,
-    rating: 4.5,
-    reviews: 124,
+  
     inStock: true,
     image:"https://lh3.googleusercontent.com/aida-public/AB6AXuD-D9jlTRoIJuqBhVkCBuYh9SDeoKGm51YYkoMs9OMYBi0xLaz3TwJBMzVsQGuN_g3Upnnf5ybn_l5BUHElJxb2vnlPd0i5b-r3wvEyj8Vd2C_4kRTOlC_gsbWLHZRdwcQykTsB-p6TZP96RU2WnE-MAxnST8aBpza0IDTYfRcnTOsu4zHVRUT6EBTA-_-PFO-PVtbxkAmrTQJQCZjqPHbJv3g6jL22Spk6dd5PNsf5s4wnDmb9gl39klvarNKyEZUHwRp5Fbg",
 

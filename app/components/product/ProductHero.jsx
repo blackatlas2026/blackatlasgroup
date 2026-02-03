@@ -21,7 +21,7 @@ export default function ProductHero({ product }) {
       {/* Left: gallery */}
       <div className="space-y-6 p-5 md:p-24">
   {/* Main image - centered, larger */}
-  <div className="relative bg-white dark:bg-zinc-900 rounded-[2rem]   aspect-square flex items-center justify-center overflow-hidden  shadow-xl shadow-gray-200/50 dark:shadow-none">
+  <div className="relative bg-white dark:bg-zinc-900 rounded-4xl   aspect-square flex items-center justify-center overflow-hidden  shadow-xl shadow-gray-200/50 dark:shadow-none">
     <img
       src={activeImage}
       alt={product.name}
@@ -62,7 +62,7 @@ export default function ProductHero({ product }) {
       <div className="flex flex-col justify-center space-y-8 p-6 md:mr-20">
         <div>
           <span className="text-xs font-bold tracking-[0.2em] text-red-600 uppercase mb-3 block">
-            {product.category}
+            {product.brand}
           </span>
           <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
             {product.name}
@@ -137,7 +137,7 @@ export default function ProductHero({ product }) {
                   className={
                     "px-6 py-3 rounded-xl text-sm transition-all " +
                     (selected
-                      ? "border-2 border-slate-900 dark:border-white font-bold bg-slate-900 dark:bg-white text-white dark:text-black"
+                      ? "border border-slate-900 dark:border-white font-bold bg-slate-900 dark:bg-white text-white dark:text-black"
                       : "border border-gray-200 dark:border-zinc-800 font-semibold hover:border-slate-900 dark:hover:border-white")
                   }
                 >

@@ -1,6 +1,38 @@
 'use client';
 
+import emailjs from "@emailjs/browser";
+import { useState } from "react";
+
 export default function ContactUs() {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          name: e.target.name.value,
+          email: e.target.email.value,
+          subject: e.target.subject.value,
+          message: e.target.message.value,
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+
+      alert("Message sent successfully!");
+      e.target.reset();
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="bg-white py-16 px-6">
       <div className="mx-auto max-w-6xl">
@@ -15,9 +47,9 @@ export default function ContactUs() {
           </p>
         </div>
 
-        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
+          {/* Left Panel — unchanged */}
           {/* Left Panel */}
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8">
             <h2 className="text-lg font-semibold text-slate-900 mb-6">
@@ -104,7 +136,8 @@ export default function ContactUs() {
 
           {/* Right Panel (Form) */}
           <div className="rounded-2xl border border-slate-200 bg-white p-8">
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              
               {/* Row 1 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -113,6 +146,8 @@ export default function ContactUs() {
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    required
                     placeholder="John Doe"
                     className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40"
                   />
@@ -123,6 +158,8 @@ export default function ContactUs() {
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    required
                     placeholder="john@example.com"
                     className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40"
                   />
@@ -136,6 +173,8 @@ export default function ContactUs() {
                 </label>
                 <input
                   type="text"
+                  name="subject"
+                  required
                   placeholder="How can we help?"
                   className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40"
                 />
@@ -148,6 +187,8 @@ export default function ContactUs() {
                 </label>
                 <textarea
                   rows={5}
+                  name="message"
+                  required
                   placeholder="Describe your inquiry in detail..."
                   className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40 resize-none"
                 />
@@ -156,9 +197,10 @@ export default function ContactUs() {
               {/* Submit */}
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-red-600 py-3 font-semibold text-white hover:bg-red-700 transition"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-red-600 py-3 font-semibold text-white hover:bg-red-700 transition disabled:opacity-60"
               >
-                Send Message →
+                {loading ? "Sending..." : "Send Message →"}
               </button>
 
               <p className="text-center text-xs text-slate-400">

@@ -3,7 +3,7 @@ export default function ProductCard({ product }) {
     <div className="group">
       <div className="relative aspect-square mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800/50 overflow-hidden flex items-center justify-center  transition-transform duration-500 group-hover:scale-[1.02]">
         <img
-          src={product.image}
+          src={product.images.main}
           alt={product.name}
           className="max-w-full max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
         />
@@ -19,7 +19,10 @@ export default function ProductCard({ product }) {
       </div>
 
       <div className="space-y-1">
-        <h3 className="font-bold text-lg group-hover:text-primary transition-colors">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-red-500/90 transition-colors">
+          {product.brand}
+        </h4>
+        <h3 className="font-bold text-lg  transition-colors">
           {product.name}
         </h3>
 

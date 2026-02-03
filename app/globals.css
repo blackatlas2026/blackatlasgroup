@@ -85,7 +85,7 @@ body {
 
 
  .organic-shape {
-            border-radius: 40px 300px 40px 150px;
+            border-radius: 40px 300px 40px 150px !important;
         }
 
 

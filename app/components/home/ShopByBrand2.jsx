@@ -4,17 +4,17 @@ export default function ShopByBrand2() {
   // Mock backend data
   const brands = [
     {
-      name: "Brand 1",
+      name: "WAYLEAF",
       description:
-        "Premium bio-available formulas for joint health, hair, and skin elasticity.",
-      logo: "/brands/logo.png", // same image used everywhere
+        "Eco-friendly products designed for modern living.",
+      logo: "/brands/brand_01_wayleaf_logo.png", // same image used everywhere
       cta: "Shop Now",
     },
     {
-      name: "Brand 2",
+      name: "B Studio",
       description:
-        "Electrolyte-balanced supplements designed to sustain you through your fast.",
-      logo: "/brands/logo.png",
+        "Tradition, thoughtfully redesigned.",
+      logo: "/brands/brand_02_b_studio.png",
       cta: "Shop Now",
     },
   ];
@@ -99,7 +99,7 @@ export default function ShopByBrand2() {
                 <img
                   src={brand.logo}
                   alt={brand.name}
-                  className="h-8 w-8 object-contain"
+                  className="h-12 w-12 object-contain"
                 />
               </div>
 

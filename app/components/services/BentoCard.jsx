@@ -48,10 +48,10 @@ export default function BentoCard({ card }) {
 
       {/* Content */}
       <div className="absolute bottom-0 left-0 p-8 z-10">
-        <h3 className="text-2xl font-black text-white uppercase tracking-tighter">
+        <h3 className="text-2xl font-black text-white uppercase tracking-tight text-shadow-sm">
           {card.title}
         </h3>
-        <p className="mt-2 text-slate-300 text-sm max-w-md">
+        <p className="mt-2 text-slate-50 text-sm max-w-md text-shadow-2xs">
           {card.description}
         </p>
 
