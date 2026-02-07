@@ -8,7 +8,7 @@ export default function PriceRangeSlider({ value, onChange }) {
       <Slider
         range
         min={0}
-        max={1000}
+        max={10000}
         value={value}
         onChange={onChange}
         trackStyle={[{ backgroundColor: "#ef4444" }]}

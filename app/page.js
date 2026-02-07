@@ -1,3 +1,6 @@
+
+
+
 import ComingSoon from "@/app/components/ComingSoon";
 import Footer from "./components/Footer";
 import Hero from "./components/home/Hero";
@@ -6,6 +9,7 @@ import ShopByBrand from "./components/home/ShopByBrand";
 import FeaturedProducts from "./components/home/FeaturedProducts";
 import TailwindTest from "./components/TailwindTest";
 import ShopByBrand2  from "./components/home/ShopByBrand2";
+
 const products = [
   {
     id: "1",
@@ -87,7 +91,7 @@ export default function Home() {
             
 
             <Hero/>
-            
+            {/* <WayLeafCards></WayLeafCards> */}
             <ShopByBrand2/>
             <FeaturedProducts products={products} />
 

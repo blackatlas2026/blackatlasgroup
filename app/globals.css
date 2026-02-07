@@ -36,9 +36,103 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family:  Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter) , Arial, Helvetica, sans-serif;
 }
 
+.buy-group:focus-within .buy-dropdown,
+.buy-group:hover .buy-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+
+
+.reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.reveal.active {
+  opacity: 1;
+}
+
+/* ----------------------------------
+   Animations
+---------------------------------- */
+
+.reveal.active.fade-up {
+  animation: fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.reveal.active.slide-left {
+  animation: slide-in-left 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.reveal.active.slide-right {
+  animation: slide-in-right 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ----------------------------------
+   Keyframes
+---------------------------------- */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Visual helper */
+.box {
+  width: 300px;
+  height: 150px;
+  background: #ef4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
 
 
 

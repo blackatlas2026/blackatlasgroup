@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProductHero from "@/app/components/product/ProductHero";
 import ProductBento from "@/app/components/product/ProductBento";
 import ProductTable from "@/app/components/product/ProductTable";
+import WayLeafCards from "@/app/components/product/WayLeafCards";
 import { productPageCards } from "@/app/data/servicesCards";
 
 export default function ProductClient({ slug }) {
@@ -31,7 +32,8 @@ export default function ProductClient({ slug }) {
   return (
     <>
       <ProductHero product={product} />
-      <ProductBento cards={productPageCards} />
+      {/* <ProductBento cards={productPageCards} /> */}
+      <WayLeafCards></WayLeafCards>
       {product.specs != null && <ProductTable specs={product.specs} />}
     </>
   );

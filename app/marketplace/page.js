@@ -55,7 +55,7 @@ export default function ShopPage() {
   });
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-12">
+    <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
       <Header total={products.length} search={search} setSearch={setSearch} />
 
       <div className="flex flex-col lg:flex-row gap-12">

@@ -79,7 +79,7 @@ export const products = [
     price: 349.99,
   
     inStock: true,
-    image:"https://lh3.googleusercontent.com/aida-public/AB6AXuD-D9jlTRoIJuqBhVkCBuYh9SDeoKGm51YYkoMs9OMYBi0xLaz3TwJBMzVsQGuN_g3Upnnf5ybn_l5BUHElJxb2vnlPd0i5b-r3wvEyj8Vd2C_4kRTOlC_gsbWLHZRdwcQykTsB-p6TZP96RU2WnE-MAxnST8aBpza0IDTYfRcnTOsu4zHVRUT6EBTA-_-PFO-PVtbxkAmrTQJQCZjqPHbJv3g6jL22Spk6dd5PNsf5s4wnDmb9gl39klvarNKyEZUHwRp5Fbg",
+    // image:"https://lh3.googleusercontent.com/aida-public/AB6AXuD-D9jlTRoIJuqBhVkCBuYh9SDeoKGm51YYkoMs9OMYBi0xLaz3TwJBMzVsQGuN_g3Upnnf5ybn_l5BUHElJxb2vnlPd0i5b-r3wvEyj8Vd2C_4kRTOlC_gsbWLHZRdwcQykTsB-p6TZP96RU2WnE-MAxnST8aBpza0IDTYfRcnTOsu4zHVRUT6EBTA-_-PFO-PVtbxkAmrTQJQCZjqPHbJv3g6jL22Spk6dd5PNsf5s4wnDmb9gl39klvarNKyEZUHwRp5Fbg",
 
     images: {
       main: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-D9jlTRoIJuqBhVkCBuYh9SDeoKGm51YYkoMs9OMYBi0xLaz3TwJBMzVsQGuN_g3Upnnf5ybn_l5BUHElJxb2vnlPd0i5b-r3wvEyj8Vd2C_4kRTOlC_gsbWLHZRdwcQykTsB-p6TZP96RU2WnE-MAxnST8aBpza0IDTYfRcnTOsu4zHVRUT6EBTA-_-PFO-PVtbxkAmrTQJQCZjqPHbJv3g6jL22Spk6dd5PNsf5s4wnDmb9gl39klvarNKyEZUHwRp5Fbg",
