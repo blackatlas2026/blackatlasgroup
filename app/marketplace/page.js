@@ -71,7 +71,7 @@ export default function ShopPage() {
               <button
                 onClick={() => fetchProducts(true)}
                 disabled={loading}
-                className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-12 py-4 rounded-lg font-bold uppercase tracking-widest text-sm hover:bg-red-600 dark:hover:bg-red-600 dark:hover:text-white transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-red-600/40"
+                className="bg-slate-900 text-white px-12 py-4 rounded-lg font-bold uppercase tracking-widest text-sm hover:bg-red-600 transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-red-600/40"
               >
                 {loading ? "Loading..." : "Load More Products"}
               </button>
@@ -93,7 +93,7 @@ function Header({ total, search, setSearch }) {
       </h1>
 
       <div className="flex items-center gap-3">
-        <span className="text-sm text-slate-500 dark:text-slate-400">
+        <span className="text-sm text-slate-500">
           Showing {total} results
         </span>
         <input
@@ -101,7 +101,7 @@ function Header({ total, search, setSearch }) {
           placeholder="Search products..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="bg-transparent p-2 border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:ring-red-600 focus:border-red-600"
+          className="bg-transparent p-2 border-slate-200 rounded-lg text-sm focus:ring-red-600 focus:border-red-600"
         />
       </div>
     </div>

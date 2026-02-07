@@ -48,7 +48,7 @@ export default function ProductHero({ product }) {
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
   {/* Left: gallery */}
       <div className="space-y-6 p-5 md:p-24">
-        <div className="relative bg-white dark:bg-zinc-900 rounded-4xl aspect-square flex items-center justify-center overflow-hidden shadow-xl">
+        <div className="relative bg-white :bg-zinc-900 rounded-4xl aspect-square flex items-center justify-center overflow-hidden shadow-xl">
           <img
             src={activeImage}
             alt={product.name}
@@ -56,21 +56,30 @@ export default function ProductHero({ product }) {
           />
         </div>
 
-        <div className="flex justify-center gap-4 px-12">
-          {[product.images.main, ...product.images.gallery].map((img) => (
-            <button
-              key={img}
-              onClick={() => setActiveImage(img)}
-              className={`w-20 h-20 rounded-2xl overflow-hidden border ${
+       <div className="grid grid-cols-4 justify-items-center">
+        {[product.images.main, ...product.images.gallery].map((img, idx) => (
+          <button
+            key={`${img}-${idx}`}
+            type="button"
+            onClick={() => setActiveImage(img)}
+            className={`aspect-square w-4/5 max-w-20 rounded-2xl overflow-hidden border transition
+              ${
                 activeImage === img
                   ? "border-red-600 ring-2 ring-red-200"
                   : "hover:border-gray-300"
-              }`}
-            >
-              <img src={img} className="w-full h-full object-cover" />
-            </button>
-          ))}
-        </div>
+              }
+            `}
+          >
+            <img
+              src={img}
+              alt="Product thumbnail"
+              className="w-full h-full object-cover"
+            />
+          </button>
+        ))}
+      </div>
+
+
       </div>
 
 
@@ -80,12 +89,12 @@ export default function ProductHero({ product }) {
           <span className="text-xs font-bold tracking-[0.2em] text-red-600 uppercase mb-3 block">
             {product.brand}
           </span>
-          <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+          <h1 className="text-4xl font-extrabold text-slate-900  leading-tight mb-4">
             {product.name}
           </h1>
 
           <div className="flex items-center gap-4">
-            <span className="text-2xl font-light text-slate-900 dark:text-white">
+            <span className="text-2xl font-light text-slate-900 ">
               ₹{product.price.toFixed(2)}
             </span>
 
@@ -93,7 +102,7 @@ export default function ProductHero({ product }) {
           </div>
         </div>
 
-        <p className="text-slate-600 dark:text-slate-400 text-md leading-relaxed max-w-lg">
+        <p className="text-slate-600  text-md leading-relaxed max-w-lg">
           {product.description}
         </p>
 
@@ -178,7 +187,7 @@ export default function ProductHero({ product }) {
     </button>
 
     {/* Dropdown */}
-    <div className="buy-dropdown absolute left-0 right-0 top-full mt-3 bg-white dark:bg-zinc-900 rounded-[1.25rem] border border-gray-100 dark:border-zinc-800 shadow-2xl opacity-0 invisible translate-y-2 transition-all duration-300 z-40 overflow-hidden">
+    <div className="buy-dropdown absolute left-0 right-0 top-full mt-3 bg-white :bg-zinc-900 rounded-[1.25rem] border border-gray-100 :border-zinc-800 shadow-2xl opacity-0 invisible translate-y-2 transition-all duration-300 z-40 overflow-hidden">
   <div className="flex flex-col">
 
     {/* External platforms */}
@@ -188,7 +197,7 @@ export default function ProductHero({ product }) {
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="px-6 py-4 font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-red-600 transition-colors border-b border-gray-50 dark:border-zinc-800"
+        className="px-6 py-4 font-semibold flex items-center justify-between hover:bg-gray-50 :hover:bg-zinc-800 hover:text-red-600 transition-colors border-b border-gray-50 :border-zinc-800"
       >
         Buy on {link.platform}
         <span className="material-symbols-outlined text-sm opacity-50">
@@ -202,7 +211,7 @@ export default function ProductHero({ product }) {
       href={buildWhatsAppLink(product, selectedVariants)}
       target="_blank"
       rel="noopener noreferrer"
-      className="px-6 py-4 font-semibold flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-red-600 transition-colors"
+      className="px-6 py-4 font-semibold flex items-center gap-3 hover:bg-gray-50 :hover:bg-zinc-800 hover:text-red-600 transition-colors"
     >
       <span className="material-symbols-outlined text-green-600">
         chat

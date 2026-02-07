@@ -13,8 +13,7 @@ module.exports = {
       },
       colors: {
                         primary: "#EF4444", // Vibrant Red
-                        "background-light": "#FFFFFF",
-                        "background-dark": "#0F172A",
+                       
                     },
                     borderRadius: {
                         DEFAULT: "0.5rem",

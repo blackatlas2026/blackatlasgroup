@@ -28,13 +28,13 @@ export default function WayLeafCards() {
     <section className="mb-32 space-y-16 mx-auto overflow-hidden">
       {/* Section Header */}
       <div className="text-center reveal fade-up">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900">
           Our Story: Conscious Craftsmanship
         </h2>
         <div className="w-16 h-1 bg-red-600 mx-auto mt-6" />
       </div>
 
-      <div className="space-y-12 px-24">
+      <div className="space-y-12 px-8 md:px-24">
         {/* #1 */}
         <StoryRow
           number="#1"
@@ -88,7 +88,7 @@ function StoryRow({ number, title, text, image, align }) {
   >
     {/* Image */}
     <div
-      className={`rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 shadow-sm
+      className={`rounded-[2.5rem] overflow-hidden bg-white border border-gray-100 shadow-sm
         ${isRight ? "md:order-2" : "md:order-1"}
       `}
     >
@@ -104,17 +104,17 @@ function StoryRow({ number, title, text, image, align }) {
     <div
       className={`space-y-4 relative border-red-600/20
         ${isRight
-          ? "md:order-1 md:pr-12 text-right border-r-2"
-          : "md:order-2 md:pl-12 border-l-2"}
+          ? "md:order-1 pr-3 md:pr-12 text-right border-r-2"
+          : "md:order-2 pl-3 md:pl-12 border-l-2"}
       `}
     >
       <span className="text-6xl font-black text-red-600/10 block leading-none">
         {number}
       </span>
-      <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+      <h3 className="text-2xl font-bold text-slate-900">
         {title}
       </h3>
-      <p className="text-base text-slate-600 dark:text-slate-400">
+      <p className="text-base text-slate-600">
         {text}
       </p>
     </div>

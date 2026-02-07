@@ -63,7 +63,7 @@ export default function Careers() {
 
 
   return (
-    <section className="pt-32 pb-24 bg-slate-50 dark:bg-slate-900 transition-colors">
+    <section className="pt-32 pb-24 bg-slate-50  transition-colors">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HEADER */}
@@ -71,7 +71,7 @@ export default function Careers() {
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Join Our <span className="text-rose-600">Team</span>
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
             Shape the future of premium retail. We're looking for passionate individuals who strive for excellence.
           </p>
         </header>
@@ -80,12 +80,12 @@ export default function Careers() {
 
         {/* FORM */}
         <section className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-2xl shadow-slate-200/20">
+          <div className="bg-white 0 p-8 md:p-12 rounded-3xl border border-slate-200  shadow-2xl shadow-slate-200/20">
 
-            <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">
+            <h2 className="text-3xl font-bold mb-2 text-slate-900 ">
               Apply Now
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 mb-10">
+            <p className="text-slate-500 mb-10">
               Complete the form below to submit your candidacy.
             </p>
 
@@ -96,7 +96,7 @@ export default function Careers() {
                     <div className="space-y-3">
                         <label
                             htmlFor="full_name"
-                            className="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                            className="text-sm font-semibold text-slate-700 "
                         >
                             Full Name
                         </label>
@@ -106,22 +106,22 @@ export default function Careers() {
                             type="text"
                             placeholder="John Doe"
                             required
-                            className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white"
+                            className="w-full px-5 py-4 rounded-xl bg-slate-50  border-transparent focus:bg-white transition-all text-slate-900"
                         />
                         </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="email">Email Address</label>
-                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white" name="email" placeholder="john@example.com" required="" type="email"/>
+                        <label className="text-sm font-semibold text-slate-700" htmlFor="email">Email Address</label>
+                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="email" placeholder="john@example.com" required="" type="email"/>
                     </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="phone">Phone Number</label>
-                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white" name="phone" placeholder="+1 (555) 000-0000" required="" type="tel"/>
+                        <label className="text-sm font-semibold text-slate-700" htmlFor="phone">Phone Number</label>
+                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="phone" placeholder="+1 (555) 000-0000" required="" type="tel"/>
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="position">Position Applied For</label>
-                        <select className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white appearance-none" name="position" required="">
+                        <label className="text-sm font-semibold text-slate-700" htmlFor="position">Position Applied For</label>
+                        <select className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900 appearance-none" name="position" required="">
                         <option disabled=""  value="">Select a role</option>
                         <option value="frontend">Frontend Developer</option>
                         <option value="product-designer">Senior Product Designer</option>
@@ -132,15 +132,15 @@ export default function Careers() {
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="linkedin">LinkedIn Profile URL</label>
-                    <input className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white" name="linkedin" placeholder="https://linkedin.com/in/username" required="" type="url"/>
+                    <label className="text-sm font-semibold text-slate-700" htmlFor="linkedin">LinkedIn Profile URL</label>
+                    <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="linkedin" placeholder="https://linkedin.com/in/username" required="" type="url"/>
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="cover_letter">Cover Letter</label>
-                    <textarea className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-900 dark:text-white min-h-[160px]" name="cover_letter" placeholder="Tell us why you're the perfect fit..." required=""></textarea>
+                    <label className="text-sm font-semibold text-slate-700" htmlFor="cover_letter">Cover Letter</label>
+                    <textarea className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900 min-h-[160px]" name="cover_letter" placeholder="Tell us why you're the perfect fit..." required=""></textarea>
                 </div>
                 <div className="space-y-2">
-  <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+  <label className="text-sm font-semibold text-slate-700">
     Upload CV / Resume
   </label>
 
@@ -173,7 +173,7 @@ export default function Careers() {
             check_circle
           </span>
 
-          <p className="font-semibold text-slate-900 dark:text-white">
+          <p className="font-semibold text-slate-900">
             {cvFile.name}
           </p>
 
@@ -187,7 +187,7 @@ export default function Careers() {
             cloud_upload
           </span>
 
-          <p className="font-bold text-slate-900 dark:text-white text-lg">
+          <p className="font-bold text-slate-900 text-lg">
             Drag & Drop or Browse
           </p>
 
@@ -235,7 +235,7 @@ export default function Careers() {
           ].map(card => (
             <div
               key={card.title}
-              className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform"
+              className="bg-white p-8 rounded-3xl border border-slate-200 hover:-translate-y-1 transition-transform"
             >
               <div className="w-12 h-12 rounded-2xl bg-rose-600/10 flex items-center justify-center mb-5">
                 <span className="material-symbols-outlined text-rose-600 text-2xl">
@@ -243,10 +243,10 @@ export default function Careers() {
                 </span>
               </div>
 
-              <h4 className="font-bold text-lg mb-2 text-slate-900 dark:text-white">
+              <h4 className="font-bold text-lg mb-2 text-slate-900">
                 {card.title}
               </h4>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">
+              <p className="text-slate-500 text-sm">
                 {card.text}
               </p>
             </div>

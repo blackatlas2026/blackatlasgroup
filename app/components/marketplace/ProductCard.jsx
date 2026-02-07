@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
           flex md:block
           gap-4 md:gap-0
           rounded-2xl
-          bg-white dark:bg-slate-900
+          bg-white
           overflow-hidden
           group cursor-pointer
           transition-all
@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
             relative
             w-2/5 
             md:w-full md:aspect-square
-            bg-slate-100 dark:bg-slate-800/50
+            bg-slate-100
             flex items-center justify-center
             transition-transform duration-500
             md:group-hover:scale-[1.02]

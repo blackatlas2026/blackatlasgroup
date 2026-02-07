@@ -1,5 +1,5 @@
 export default function Hero2() {
-    return (<div class="relative mx-auto max-w-7xl aspect-21/10 min-h-20 organic-mask bg-slate-100 dark:bg-slate-900 overflow-hidden group">
+    return (<div class="relative mx-auto max-w-7xl aspect-21/10 min-h-20 organic-mask bg-slate-100 overflow-hidden group">
         <img alt="Modern luxury living room interior" class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU1OPpOVbHSer8dJSIcK5SNJ8GvueBEcUx-qnlBCMYuJYG9a2miXQNlmuP4Ko8duT1JtgRBNvumek4JQE7LXybdFL7Difk4kJOE9dRAjkUIXObRsIU6AEWGCVWZS2uIWpBaY8LM1PGl7saixTiB38q4_q98je0MTLi6I04wIgqQAWG9tLGcsOtYIM2eNG6lpIRFXG6ykyGvReBWN6wFmKbXrFL--7mgxnN3--SEdyXcWDYw7monepmh3J_2LTuIBjusZFB6CI"/>
         <div class="absolute inset-0 bg-black/35">
         </div>

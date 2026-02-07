@@ -21,7 +21,7 @@ export default function ShopByBrand({ brands = [] }) {
 
   return (
     <section className="w-full bg-white relative py-16 lg:py-24">
-    <div className="absolute inset-x-0 top-0 pointer-events-none z-0 opacity-40 dark:opacity-20 pt-0">
+    <div className="absolute inset-x-0 top-0 pointer-events-none z-0 opacity-40 pt-0">
       <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
         <path d="M-50,150 C200,50 400,600 600,400 C800,200 1000,750 1250,650" fill="none" stroke="#E11D48" strokeLinecap="round" strokeWidth="1"></path>
         <path d="M-50,155 C200,50 400,600 600,400 C800,205 1000,755 1250,650" fill="none" stroke="#E11D48" strokeDasharray="4 4" strokeOpacity="0.3" strokeWidth="0.75"></path>
