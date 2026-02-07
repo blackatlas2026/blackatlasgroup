@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -10,6 +10,9 @@ export default function ProductsPage() {
 
   const [nextCursor, setNextCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  
+
+const router = useRouter();
 
   async function fetchProducts({ reset = false } = {}) {
     if (loading) return;
@@ -65,7 +68,10 @@ export default function ProductsPage() {
           className="border rounded-lg px-3 py-2 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
 
-        <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button
+          onClick={() => router.push("/admin/products/new")}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+        >
           + Add Product
         </button>
       </div>
