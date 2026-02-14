@@ -20,6 +20,7 @@ export default function ProductCard({ product }) {
           overflow-hidden
           cursor-pointer
           transition-all
+          rounded-t-2xl
      
         "
       >

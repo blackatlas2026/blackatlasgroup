@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase-admin";
 import admin from "firebase-admin";
 
-export async function POST() {
-  const data = {
+
+const wayleafPlates = {
     brand: "Wayleaf",
     category: "Plates",
 
@@ -25,10 +25,29 @@ export async function POST() {
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   };
 
+
+  const wayleafBowls = {
+    brand: "Wayleaf",
+    category: "Bowls",
+    facets: [
+      {
+        key: "size",
+        label: "Size",
+        type: "select",
+        options: ['4"'],
+      },
+    ],
+
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  };
+
+export async function POST() {
+  
+
   await db
     .collection("facetSchemas")
-    .doc("wayleaf-plates")
-    .set(data);
+    .doc("wayleaf-bowls")
+    .set(wayleafBowls);
 
   return NextResponse.json({ success: true });
 }

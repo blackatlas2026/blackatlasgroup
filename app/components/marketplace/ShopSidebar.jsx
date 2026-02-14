@@ -40,20 +40,8 @@ export default function ShopSidebar({ value, onChange }) {
   /* ----------------------------------
      Load Facet Schema when brand selected
   ---------------------------------- */
-  useEffect(() => {
-  if (!selectedBrand) {
-    setFacetSchema(null);
-    return;
-  }
-
-  const brandObj = brandOptions.find(b => b.id === selectedBrand);
-
-  const category =
-    brandObj?.categories && brandObj.categories.length > 0
-      ? brandObj.categories[0]
-      : null;
-
-  if (!category) {
+useEffect(() => {
+  if (!value?.brand || !value?.category) {
     setFacetSchema(null);
     return;
   }
@@ -61,7 +49,7 @@ export default function ShopSidebar({ value, onChange }) {
   async function loadSchema() {
     try {
       const res = await fetch(
-        `/api/products/facets/schema?brand=${selectedBrand}&category=${category}`
+        `/api/products/facets/schema?brand=${value.brand}&category=${value.category}`
       );
 
       if (!res.ok) {
@@ -77,14 +65,14 @@ export default function ShopSidebar({ value, onChange }) {
   }
 
   loadSchema();
- 
-}, [selectedBrand, brandOptions]);
+}, [value?.brand, value?.category]);
 
 
 
-  // useEffect(() => {
-  //   console.log(facetSchema)
-  // },[facetSchema])
+
+  useEffect(() => {
+    console.log(facetSchema)
+  },[facetSchema])
 
 
   /* ----------------------------------
@@ -198,11 +186,49 @@ export default function ShopSidebar({ value, onChange }) {
                 />
               </MobileSection>
 
+
+          {/* CATEGORY (only after brand selected) */}
+            {selectedBrand && (
+              <MobileSection
+                title="Category"
+                isOpen={true}
+                onToggle={() => {}}
+              >
+                {brandOptions
+                  .find((b) => b.id === selectedBrand)
+                  ?.categories?.map((cat) => (
+                    <label
+                      key={cat}
+                      className="flex items-center gap-3 cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="category"
+                        checked={value?.category === cat}
+                        onChange={() =>
+                          onChange({
+                            ...value,
+                            category: cat,
+                            facets: {}, // reset facets when category changes
+                          })
+                        }
+                        className="w-4 h-4 accent-red-500"
+                      />
+                      <span className="text-sm">{cat}</span>
+                    </label>
+                  ))}
+              </MobileSection>
+            )}
+
+
           {/* ----------------------------------
               Dynamic Facets (Only after brand selected)
           ---------------------------------- */}
-          {selectedBrand && facetSchema && (
+          {selectedBrand && value?.category && facetSchema && (
             <>
+              
+                
+
               {facetSchema.facets?.map((facet) => (
                 <MobileSection
                   key={facet.key}
@@ -231,7 +257,7 @@ export default function ShopSidebar({ value, onChange }) {
                 </MobileSection>
               ))}
 
-              {/* Price (Optional — keep if global) */}
+              
               
 
               {/* Reset */}
