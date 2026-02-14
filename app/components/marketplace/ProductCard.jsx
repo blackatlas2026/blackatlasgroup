@@ -1,9 +1,15 @@
+import Link from "next/link";
+
+
+
+
 export default function ProductCard({ product }) {
   const colorVariant = product.variantAttributes?.find(
     v => v.key === "color"
   );
 
   return (
+    <Link href={`/product/${product?.slug}`} className="group block">
     <div className="group">
       <div
         className="
@@ -111,5 +117,6 @@ export default function ProductCard({ product }) {
         </div>
       </div>
     </div>
+    </Link>
   );
 }
