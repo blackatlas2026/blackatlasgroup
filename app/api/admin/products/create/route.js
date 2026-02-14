@@ -17,6 +17,7 @@ export async function POST(req) {
     description,
     price,
     inStock,
+    featuredProducts,
 
     images,             // { main, gallery }
     variantAttributes,  // []
@@ -52,6 +53,7 @@ const normalizedProduct = {
   description: description?.trim() || "",
   price: Number(price),
   inStock: Boolean(inStock),
+  featuredProducts: Boolean(featuredProducts),
 
   images: {
     main: images?.main || null,

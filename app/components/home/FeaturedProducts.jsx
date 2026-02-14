@@ -50,7 +50,7 @@ export default function FeaturedProducts({ products }) {
           {/* Scroll Container */}
           <div
             ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-10"
+            className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-10 justify-center"
           >
             {products.map(product => (
               <div

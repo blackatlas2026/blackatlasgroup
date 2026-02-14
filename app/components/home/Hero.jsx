@@ -62,7 +62,7 @@ export default function Hero() {
       {/* SVG mask */}
       
       
-      <div className="relative mx-auto max-w-7xl px-6 z-10 ">
+      <div className="relative mx-auto  px-24 z-10 ">
         {/* Height container */}
         <div className="h-[80vh] md:h-[90vh] relative"> 
           {/* Card 1 - Scale/Fade */}
