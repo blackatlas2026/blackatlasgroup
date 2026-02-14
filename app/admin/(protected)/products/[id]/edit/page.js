@@ -1,108 +1,143 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 
-export default function AddProductPage() {
+export default function EditProductPage() {
   const router = useRouter();
+  const { id } = useParams();
+
   const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
+  const [initialLoading, setInitialLoading] = useState(true);
+  
   const [variantAttributes, setVariantAttributes] = useState([]);
-  const [mainImageIndex, setMainImageIndex] = useState(0);
   const [externalLinks, setExternalLinks] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
   const [facetSchema, setFacetSchema] = useState(null);
   const [facets, setFacets] = useState({});
   const [brandOptions, setBrandOptions] = useState([]);
+  const [slugStatus, setSlugStatus] = useState("idle");
+  
+const [mainImageUrl, setMainImageUrl] = useState(null); // existing main URL
+const [existingImages, setExistingImages] = useState([]);
+const [imageFiles, setImageFiles] = useState([]);
+const [mainImageId, setMainImageId] = useState(null);
 
+ 
 
-
-  const [imageFiles, setImageFiles] = useState([]); // File[]
   const [images, setImages] = useState({
     main: "",
     gallery: [],
   });
 
-  
-// useEffect(() => {
-//   console.log(facets);
-// },[facets])
-
- const [form, setForm] = useState({
-  slug: "",
-  brand: "",
-  category: "",
-  name: "",
-  description: "",
-  price: "",
-  inStock: true,
-  featuredProduct: false, // ✅ NEW
-});
+  const [form, setForm] = useState({
+    slug: "",
+    brand: "",
+    category: "",
+    name: "",
+    description: "",
+    price: "",
+    inStock: true,
+    featuredProduct: false,
+  });
 
 
 
-  
-useEffect(() => {
-  if (!form.brand || !form.category) {
-    setFacetSchema(null);
-    setFacets({});
-    return;
-  }
 
-  async function loadSchema() {
-    const res = await fetch(
-      `/api/products/facets/schema?brand=${form.brand}&category=${form.category}`
-    );
+  // 🔥 Load existing product
+  useEffect(() => {
+    async function loadProduct() {
+      const res = await fetch(`/api/products/${id}`);
+      if (!res.ok) {
+        alert("Product not found");
+        router.push("/admin/dashboard");
+        return;
+      }
 
-    if (!res.ok) {
-      setFacetSchema(null);
-      setFacets({});
-      return;
+      const data = await res.json();
+      console.log(data);
+
+      setForm({
+        slug: data.slug || "",
+        brand: data.brand || "",
+        category: data.category || "",
+        name: data.name || "",
+        description: data.description || "",
+        price: data.price || "",
+        inStock: data.inStock ?? true,
+        featuredProduct: data.featuredProduct ?? false,
+      });
+
+      setVariantAttributes(data.variantAttributes || []);
+      setExternalLinks(data.externalLinks || []);
+      setFacets(data.facets || {});
+      const mainUrl = data.images?.main || null;
+      const galleryUrls = data.images?.gallery || [];
+
+      setMainImageUrl(mainUrl);
+      setExistingImages(galleryUrls);
+      setMainImageId(mainUrl ? "existing-main" : null);
+
+      
+
+      setInitialLoading(false);
     }
 
-    const data = await res.json();
-    setFacetSchema(data);
+    loadProduct();
+  }, [id, router]);
 
-    const initial = {};
-    data.facets.forEach(f => {
-      initial[f.key] = [];
-    });
-    setFacets(initial);
-  }
+  // 🔥 Slug check (exclude current product)
+  useEffect(() => {
+    if (!form.slug) return;
 
-  loadSchema();
-}, [form.brand, form.category]);
+    const timeout = setTimeout(async () => {
+      setSlugStatus("checking");
 
+      const res = await fetch(
+        `/api/admin/products/check-slug?slug=${form.slug}&exclude=${id}`
+      );
+      const data = await res.json();
 
+      setSlugStatus(data.available ? "available" : "taken");
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [form.slug, id]);
+
+  // 🔥 Load brands
   useEffect(() => {
     async function loadBrands() {
       const res = await fetch("/api/products/brands");
       const data = await res.json();
       setBrandOptions(data);
     }
-
     loadBrands();
   }, []);
 
+  useEffect(() =>{
+  console.log(variantAttributes);
+},[variantAttributes])
+
+
+  // 🔥 Load facet schema
+  useEffect(() => {
+    if (!form.brand || !form.category) return;
+
+    async function loadSchema() {
+      const res = await fetch(
+        `/api/products/facets/schema?brand=${form.brand}&category=${form.category}`
+      );
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+      setFacetSchema(data);
+    }
+
+    loadSchema();
+  }, [form.brand, form.category]);
 
   function update(key, value) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
-
-  async function uploadImage() {
-    const data = new FormData();
-    data.append("file", imageFile);
-
-    const res = await fetch("/api/admin/upload-image", {
-      method: "POST",
-      body: data,
-    });
-
-    if (!res.ok) throw new Error("Image upload failed");
-
-    const img = await res.json();
-    return img.url;
+    setForm(f => ({ ...f, [key]: value }));
   }
 
   async function uploadImages(files) {
@@ -117,8 +152,6 @@ useEffect(() => {
         body: data,
       });
 
-      if (!res.ok) throw new Error("Image upload failed");
-
       const img = await res.json();
       uploaded.push(img.url);
     }
@@ -126,55 +159,72 @@ useEffect(() => {
     return uploaded;
   }
 
- 
-
   async function submit() {
-  if (imageFiles.length === 0) {
-    alert("Please upload at least one image");
-    return;
+    console.log("presses");
+    setLoading(true);
+
+    try {
+      // 1️⃣ Upload new images
+      let uploadedUrls = [];
+
+      if (imageFiles.length > 0) {
+        uploadedUrls = await uploadImages(imageFiles);
+      }
+
+      const selectedImage = allImages.find(img => img.id === mainImageId);
+
+      let finalMain = null;
+
+      if (selectedImage) {
+        if (selectedImage.type === "existing") {
+          finalMain = selectedImage.value;
+        } else {
+          const index = imageFiles.findIndex(
+            (_, i) => `new-${i}` === selectedImage.id
+          );
+          finalMain = uploadedUrls[index];
+        }
+      }
+
+      const finalGallery = [
+        ...existingImages,
+        ...uploadedUrls,
+      ].filter(url => url !== finalMain);
+
+
+
+      const res = await fetch(`/api/admin/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          price: Number(form.price),
+          images: {
+            main: finalMain,
+            gallery: finalGallery,
+          },
+          variantAttributes,
+          externalLinks,
+          facets,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Update failed");
+
+      router.push("/admin/dashboard");
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  setLoading(true);
-
-  try {
-    const uploadedUrls = await uploadImages(imageFiles);
-
-    const mainImage = uploadedUrls[mainImageIndex];
-
-    const galleryImages = uploadedUrls.filter(
-      (_, idx) => idx !== mainImageIndex
-    );
-
-    const res = await fetch("/api/admin/products/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        price: Number(form.price),
-
-        images: {
-          main: mainImage,
-          gallery: galleryImages,
-        },
-
-        variantAttributes,
-        externalLinks,
-        facets,
-      }),
-    });
-
-    if (!res.ok) throw new Error("Create failed");
-
-    router.push("/admin/products");
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    setLoading(false);
-  }
-}
 
 
 
+
+
+  
   function addVariantAttribute() {
   setVariantAttributes(v => [
     ...v,
@@ -250,6 +300,10 @@ function addExternalLink() {
   ]);
 }
 
+function update(key, value) {
+    setForm((f) => ({ ...f, [key]: value }));
+  }
+
 function updateExternalLink(id, key, value) {
   setExternalLinks(l =>
     l.map(link =>
@@ -262,14 +316,48 @@ function removeExternalLink(id) {
   setExternalLinks(l => l.filter(link => link.id !== id));
 }
 
+const oldPreviews = [
+  ...(mainImageUrl
+    ? [{
+        id: "existing-main",
+        type: "existing",
+        value: mainImageUrl,
+        preview: mainImageUrl,
+      }]
+    : []),
 
+  ...existingImages.map((url, index) => ({
+    id: `existing-${index}`,
+    type: "existing",
+    value: url,
+    preview: url,
+  })),
+];
+
+const newPreviews = imageFiles.map((file, index) => ({
+  id: `new-${index}`,
+  type: "new",
+  value: file,
+  preview: URL.createObjectURL(file),
+}));
+
+const allImages = [...oldPreviews, ...newPreviews];
+
+
+
+
+  console.log(allImages);
+
+  if (initialLoading) {
+    return <div className="p-8">Loading...</div>;
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Add Product</h1>
+      <h1 className="text-3xl font-bold mb-6">Edit Product</h1>
 
       <div className="grid gap-4">
-        <input placeholder="Slug" onChange={e => update("slug", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+        
         {/* Brand */}
         <select
           value={form.brand}
@@ -308,9 +396,35 @@ function removeExternalLink(id) {
           </select>
         )}
 
-        <input placeholder="Product Name" onChange={e => update("name", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
-
+        
+        <input placeholder="Product Name" value={form.name} onChange={e => update("name", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+       
+        <div>
+          <input placeholder="Slug" value={form.slug} onChange={e => update("slug", e.target.value)} className="input w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+          <p className="text-sm text-gray-500">
+            URL: /products/{form.slug}
+          </p>
+          <div className="text-sm mt-1">
+            {slugStatus === "checking" && (
+              <span className="text-gray-500">
+                Checking availability...
+              </span>
+            )}
+            {slugStatus === "available" && (
+              <span className="text-green-600">
+                ✓ Slug is available
+              </span>
+            )}
+            {slugStatus === "taken" && (
+              <span className="text-red-600">
+                ✗ Slug already taken
+              </span>
+            )}
+          </div>
+        
+        </div>
         <textarea
+          value={form.description}
           placeholder="Description"
           className="h-32 input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           onChange={e => update("description", e.target.value)}
@@ -318,6 +432,7 @@ function removeExternalLink(id) {
 
         <input
           type="number"
+          value={form.price}
           placeholder="Price"
           onChange={e => update("price", e.target.value)}
           className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -325,44 +440,62 @@ function removeExternalLink(id) {
 
         {/* 🔥 Image Upload */}
         {/* 🔥 Image Upload */}
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={e => setImageFiles(Array.from(e.target.files))}
-          className="border rounded-lg p-2"
+{allImages.length > 0 && (
+  <div className="grid grid-cols-3 gap-4 mt-4">
+    {allImages.map((img) => (
+      <div
+        key={img.id}
+        className={`relative border rounded-lg p-2 cursor-pointer ${
+          mainImageId === img.id ? "ring-2 ring-red-500" : ""
+        }`}
+        onClick={() => setMainImageId(img.id)}
+      >
+        <img
+          src={img.preview}
+          alt="Preview"
+          className="h-28 w-full object-cover rounded"
         />
 
-        {imageFiles.length > 0 && (
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            {imageFiles.map((file, idx) => {
-              const preview = URL.createObjectURL(file);
-
-              return (
-                <div
-                  key={idx}
-                  className={`relative border rounded-lg p-2 cursor-pointer ${
-                    mainImageIndex === idx ? "ring-2 ring-red-500" : ""
-                  }`}
-                  onClick={() => setMainImageIndex(idx)}
-                >
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="h-28 w-full object-cover rounded"
-                    onLoad={() => URL.revokeObjectURL(preview)}
-                  />
-
-                  {mainImageIndex === idx && (
-                    <span className="absolute top-1 left-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded">
-                      Main
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+        {mainImageId === img.id && (
+          <span className="absolute top-1 left-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded">
+            Main
+          </span>
         )}
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+
+            if (img.type === "existing") {
+              if (img.id === "existing-main") {
+                setMainImageId(null);
+              } else {
+                setExistingImages(prev =>
+                  prev.filter((_, i) => `existing-${i}` !== img.id)
+                );
+              }
+            } else {
+              setImageFiles(prev =>
+                prev.filter((_, i) => `new-${i}` !== img.id)
+              );
+            }
+
+            if (mainImageId === img.id) {
+              const remaining = allImages.filter(i => i.id !== img.id);
+              setMainImageId(remaining[0]?.id || null);
+            }
+          }}
+          className="absolute top-1 right-1 bg-black text-white text-xs px-2 py-0.5 rounded"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
 
 
 
@@ -488,20 +621,34 @@ function removeExternalLink(id) {
 
           <div className="flex flex-wrap gap-3">
             {facet.options.map(opt => {
-              const selected = facets[facet.key]?.includes(opt);
+              const selected = (facets[facet.key] || []).some(
+                v => v.toLowerCase() === opt.toLowerCase()
+              );
 
               return (
                 <button
                   key={opt}
                   type="button"
                   onClick={() =>
-                    setFacets(prev => ({
-                      ...prev,
-                      [facet.key]: selected
-                        ? prev[facet.key].filter(v => v !== opt)
-                        : [...prev[facet.key], opt],
-                    }))
+                    setFacets(prev => {
+                      const current = prev[facet.key] || [];
+
+                      const exists = current.some(
+                        v => v.toLowerCase() === opt.toLowerCase()
+                      );
+
+                      return {
+                        ...prev,
+                        [facet.key]: exists
+                          ? current.filter(
+                              v => v.toLowerCase() !== opt.toLowerCase()
+                            )
+                          : [...current, opt],
+                      };
+                    })
                   }
+
+
                   className={`px-3 py-1.5 rounded-lg border text-sm transition
                     ${
                       selected
@@ -599,11 +746,12 @@ function removeExternalLink(id) {
         </label>
 
         <button
+        
           disabled={loading}
           onClick={submit}
           className="bg-black text-white py-3 rounded-lg hover:bg-red-600 transition"
         >
-          {loading ? "Creating..." : "Create Product"}
+          {loading ? "Editing..." : "Edit Product"}
         </button>
       </div>
     </div>

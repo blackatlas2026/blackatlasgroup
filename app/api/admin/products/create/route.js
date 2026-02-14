@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
-import { createProduct } from "@/lib/services/productService";
+import { createProduct,checkSlugAvailability } from "@/lib/services/productService";
 import { requireAdmin } from "@/lib/auth/requireAdmin";
+
+
+
+
+function generateSlug(name) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
 
 export async function POST(req) {
   // 🔐 Admin guard
@@ -8,8 +19,12 @@ export async function POST(req) {
   if (admin instanceof NextResponse) return admin;
 
   const body = await req.json();
+  
 
-  const {
+  
+
+
+  let {
     slug,
     brand,
     category,
@@ -24,6 +39,18 @@ export async function POST(req) {
     externalLinks,      // []
     facets,
   } = body;
+
+  if (!slug) {
+    slug = generateSlug(name);
+  }
+
+  const existing = await checkSlugAvailability(slug);
+  if (!existing) {
+    return NextResponse.json(
+      { error: "Slug already exists" },
+      { status: 400 }
+    );
+  }
 
   /* ----------------------------
      Basic validation

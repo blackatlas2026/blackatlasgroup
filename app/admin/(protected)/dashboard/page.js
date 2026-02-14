@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const [hasMore, setHasMore] = useState(true);
   
 
-const router = useRouter();
+  const router = useRouter();
 
   async function fetchProducts({ reset = false } = {}) {
     if (loading) return;
@@ -102,7 +102,7 @@ const router = useRouter();
                 </td>
                 <td className="px-4 py-2 border">
                   <div className="flex gap-2">
-                    <button className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500">
+                    <button className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500" onClick={() => {router.push(`/admin/products/${product.slug}/edit`)}}>
                       Edit
                     </button>
                     <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
