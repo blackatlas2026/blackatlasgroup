@@ -21,6 +21,7 @@ export async function POST(req) {
     images,             // { main, gallery }
     variantAttributes,  // []
     externalLinks,      // []
+    facets,
   } = body;
 
   /* ----------------------------
@@ -80,6 +81,17 @@ const normalizedProduct = {
         };
       })
     : [],
+
+    facets: typeof facets === "object" && facets !== null
+      ? Object.fromEntries(
+          Object.entries(facets).map(([key, value]) => [
+            String(key).trim(),
+            Array.isArray(value)
+              ? value.map(v => String(v).trim().toLowerCase())
+              : []
+          ])
+        )
+      : {},
 
   // 🧾 Audit fields
   createdBy: admin.uid,

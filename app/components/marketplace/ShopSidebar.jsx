@@ -1,123 +1,263 @@
 "use client";
 
-import { useState } from "react";
-import { brands, categories, colors } from "@/app/data/filters";
+import { useEffect, useState } from "react";
 import PriceRangeSlider from "./PriceRangeSlider";
 
 export default function ShopSidebar({ value, onChange }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const [open, setOpen] = useState({
-    brands: false,
-    categories: false,
-    price: false,
-    colors: false,
+    brands: true,
   });
+
+  const [brandOptions, setBrandOptions] = useState([]);
+  const [facetSchema, setFacetSchema] = useState(null);
+
+  const selectedBrand = value?.brand || null;
 
   const toggle = (key) =>
     setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  /* ----------------------------------
+     Load Brands from API
+  ---------------------------------- */
+  useEffect(() => {
+    async function loadBrands() {
+      try {
+        const res = await fetch("/api/products/brands");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        setBrandOptions(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load brands", err);
+      }
+    }
+
+    loadBrands();
+  }, []);
+
+  /* ----------------------------------
+     Load Facet Schema when brand selected
+  ---------------------------------- */
+  useEffect(() => {
+  if (!selectedBrand) {
+    setFacetSchema(null);
+    return;
+  }
+
+  const brandObj = brandOptions.find(b => b.id === selectedBrand);
+
+  const category =
+    brandObj?.categories && brandObj.categories.length > 0
+      ? brandObj.categories[0]
+      : null;
+
+  if (!category) {
+    setFacetSchema(null);
+    return;
+  }
+
+  async function loadSchema() {
+    try {
+      const res = await fetch(
+        `/api/products/facets/schema?brand=${selectedBrand}&category=${category}`
+      );
+
+      if (!res.ok) {
+        setFacetSchema(null);
+        return;
+      }
+
+      const data = await res.json();
+      setFacetSchema(data);
+    } catch (err) {
+      console.error("Failed to load facet schema", err);
+    }
+  }
+
+  loadSchema();
+ 
+}, [selectedBrand, brandOptions]);
+
+
+
+  // useEffect(() => {
+  //   console.log(facetSchema)
+  // },[facetSchema])
+
+
+  /* ----------------------------------
+     Handlers
+  ---------------------------------- */
+
+  const handleBrandSelect = (brandId) => {
+    onChange({
+      brand: brandId,
+      category: null,
+      facets: {},
+      price: [0, 10000],
+    });
+  };
+
+  const handleFacetChange = (key, option) => {
+    const normalizedKey = key.toLowerCase();
+    const normalizedOption = option.toLowerCase();
+
+    const current = value?.facets?.[normalizedKey] || [];
+
+    const next = current.includes(normalizedOption)
+      ? current.filter((o) => o !== normalizedOption)
+      : [...current, normalizedOption];
+
+    onChange({
+      ...value,
+      facets: {
+        ...value.facets,
+        [normalizedKey]: next,
+      },
+    });
+  };
+
+
+  const resetFilters = () => {
+    onChange({
+      brand: null,
+      category: null,
+      facets: {},
+      price: [0, 10000],
+    });
+
+    setFacetSchema(null);
+  };
+
+
+  /* ----------------------------------
+     Render
+  ---------------------------------- */
+
   return (
     <aside className="w-full lg:w-64 space-y-6 lg:space-y-10">
 
-        {/* Mobile Filters Header */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="w-full lg:hidden py-3 px-6 rounded-lg border-2 border-slate-900 font-bold text-sm uppercase flex items-center justify-between tracking-widest hover:bg-slate-900 hover:text-white transition-all"
-        >
-          Filters
-          <span className="material-symbols-outlined text-xl">
-            {mobileOpen ? "expand_less" : "expand_more"}
-          </span>
-        </button>
+      {/* Mobile Header */}
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="w-full lg:hidden py-3 px-6 rounded-lg border-2 border-slate-900 font-bold text-sm uppercase flex items-center justify-between tracking-widest hover:bg-slate-900 hover:text-white transition-all"
+      >
+        Filters
+        <span className="material-symbols-outlined text-xl">
+          {mobileOpen ? "expand_less" : "expand_more"}
+        </span>
+      </button>
 
-
-          <div
+      <div
         className={`
           overflow-hidden transition-all duration-300
           ${mobileOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}
           lg:max-h-none lg:opacity-100
         `}
       >
-    <div className="pt-6 lg:pt-0 space-y-6 lg:space-y-10">
-      
-      {/* Brands */}
-      <MobileSection
-        title="Shop by Brand"
-        isOpen={open.brands}
-        onToggle={() => toggle("brands")}
-      >
-        {brands.map((b) => (
-          <label key={b.name} className="flex justify-between items-center">
-            <div className="flex gap-3 items-center">
-              <input
-                type="checkbox"
-                className="w-5 h-5 rounded accent-red-500 border-slate-300"
-              />
-              <span className="text-sm">{b.name}</span>
-            </div>
-            <span className="text-xs text-slate-400">{b.count}</span>
-          </label>
-        ))}
-      </MobileSection>
+        <div className="pt-6 lg:pt-0 space-y-8">
 
-      {/* Categories */}
-      <MobileSection
-        title="Categories"
-        isOpen={open.categories}
-        onToggle={() => toggle("categories")}
-      >
-        {categories.map((c) => (
-          <a key={c} className="block text-sm hover:text-red-500">
-            {c}
-          </a>
-        ))}
-      </MobileSection>
+          {/* ----------------------------------
+              Shop by Brand (Always visible)
+          ---------------------------------- */}
+          <MobileSection
+            title="Shop by Brand"
+            isOpen={open.brands}
+            onToggle={() => toggle("brands")}
+          >
+            {brandOptions.map((b) => (
+              <label
+                key={b.id}
+                className="flex justify-between items-center cursor-pointer"
+              >
+                <div className="flex gap-3 items-center">
+                  <input
+                    type="radio"
+                    name="brand"
+                    checked={selectedBrand === b.id}
+                    onChange={() => handleBrandSelect(b.id)}
+                    className="w-5 h-5 accent-red-500"
+                  />
+                  <span className="text-sm">{b.name}</span>
+                </div>
+              </label>
+            ))}
+          </MobileSection>
+          <MobileSection
+                title="Price Range"
+                isOpen={true}
+                onToggle={() => {}}
+              >
+                <PriceRangeSlider
+                  value={value?.price}
+                  onChange={(price) =>
+                    onChange({ ...value, price })
+                  }
+                />
+              </MobileSection>
 
-      {/* Price */}
-      <MobileSection
-        title="Price Range"
-        isOpen={open.price}
-        onToggle={() => toggle("price")}
-      >
-        <PriceRangeSlider value={value} onChange={onChange} />
-      </MobileSection>
+          {/* ----------------------------------
+              Dynamic Facets (Only after brand selected)
+          ---------------------------------- */}
+          {selectedBrand && facetSchema && (
+            <>
+              {facetSchema.facets?.map((facet) => (
+                <MobileSection
+                  key={facet.key}
+                  title={facet.label}
+                  isOpen={true}
+                  onToggle={() => {}}
+                >
+                  {facet.options.map((option) => (
+                    <label
+                      key={option}
+                      className="flex items-center gap-3 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={
+                          value?.facets?.[facet.key]?.includes(option.toLowerCase()) || false
+                        }
+                        onChange={() =>
+                          handleFacetChange(facet.key, option)
+                        }
+                        className="w-4 h-4 accent-red-500"
+                      />
+                      <span className="text-sm">{option}</span>
+                    </label>
+                  ))}
+                </MobileSection>
+              ))}
 
-      {/* Colors */}
-      <MobileSection
-        title="Colors"
-        isOpen={open.colors}
-        onToggle={() => toggle("colors")}
-      >
-        <div className="flex gap-3 flex-wrap">
-          {colors.map((c, i) => (
-            <button
-              key={i}
-              className="w-7 h-7 rounded-full border"
-              style={{ backgroundColor: c }}
-            />
-          ))}
+              {/* Price (Optional — keep if global) */}
+              
+
+              {/* Reset */}
+              <button
+                onClick={resetFilters}
+                className="w-full py-3 px-6 rounded-lg border-2 border-slate-900 font-bold text-sm uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"
+              >
+                Reset All Filters
+              </button>
+            </>
+          )}
         </div>
-      </MobileSection>
-
-      {/* Reset */}
-      <button className="w-full py-3 px-6 rounded-lg border-2 border-slate-900 font-bold text-sm uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">
-        Reset All Filters
-      </button>
-      </div>
       </div>
     </aside>
   );
 }
 
-
+/* ----------------------------------
+   Reusable Section Component
+---------------------------------- */
 function MobileSection({ title, isOpen, onToggle, children }) {
   return (
     <div>
-      {/* Header */}
       <button
         onClick={onToggle}
-        className="w-full flex justify-between items-center text-sm font-bold uppercase border-b pb-3 lg:pb-0 "
+        className="w-full flex justify-between items-center text-sm font-bold uppercase border-b pb-3"
       >
         {title}
         <span className="lg:hidden text-xl">
@@ -125,7 +265,6 @@ function MobileSection({ title, isOpen, onToggle, children }) {
         </span>
       </button>
 
-      {/* Content */}
       <div
         className={`
           overflow-hidden transition-all duration-300
@@ -135,16 +274,6 @@ function MobileSection({ title, isOpen, onToggle, children }) {
       >
         <div className="space-y-4">{children}</div>
       </div>
-    </div>
-  );
-}
-function Section({ title, children }) {
-  return (
-    <div>
-      <h3 className="text-sm font-bold uppercase border-b pb-3 mb-6">
-        {title}
-      </h3>
-      <div className="space-y-4">{children}</div>
     </div>
   );
 }

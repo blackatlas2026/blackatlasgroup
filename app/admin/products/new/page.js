@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -11,6 +12,10 @@ export default function AddProductPage() {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [externalLinks, setExternalLinks] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [facetSchema, setFacetSchema] = useState(null);
+  const [facets, setFacets] = useState({});
+  const [brandOptions, setBrandOptions] = useState([]);
+
 
 
   const [imageFiles, setImageFiles] = useState([]); // File[]
@@ -18,6 +23,11 @@ export default function AddProductPage() {
     main: "",
     gallery: [],
   });
+
+  
+// useEffect(() => {
+//   console.log(facets);
+// },[facets])
 
  const [form, setForm] = useState({
   slug: "",
@@ -29,6 +39,52 @@ export default function AddProductPage() {
   inStock: true,
   featuredProduct: false, // ✅ NEW
 });
+
+
+
+  
+useEffect(() => {
+  if (!form.brand || !form.category) {
+    setFacetSchema(null);
+    setFacets({});
+    return;
+  }
+
+  async function loadSchema() {
+    const res = await fetch(
+      `/api/products/facets/schema?brand=${form.brand}&category=${form.category}`
+    );
+
+    if (!res.ok) {
+      setFacetSchema(null);
+      setFacets({});
+      return;
+    }
+
+    const data = await res.json();
+    setFacetSchema(data);
+
+    const initial = {};
+    data.facets.forEach(f => {
+      initial[f.key] = [];
+    });
+    setFacets(initial);
+  }
+
+  loadSchema();
+}, [form.brand, form.category]);
+
+
+  useEffect(() => {
+    async function loadBrands() {
+      const res = await fetch("/api/products/brands");
+      const data = await res.json();
+      setBrandOptions(data);
+    }
+
+    loadBrands();
+  }, []);
+
 
   function update(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -103,6 +159,7 @@ export default function AddProductPage() {
 
         variantAttributes,
         externalLinks,
+        facets,
       }),
     });
 
@@ -213,8 +270,44 @@ function removeExternalLink(id) {
 
       <div className="grid gap-4">
         <input placeholder="Slug" onChange={e => update("slug", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
-        <input placeholder="Brand" onChange={e => update("brand", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
-        <input placeholder="Category" onChange={e => update("category", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+        {/* Brand */}
+        <select
+          value={form.brand}
+          onChange={e =>
+            setForm(f => ({
+              ...f,
+              brand: e.target.value,
+              category: "", // reset category on brand change
+            }))
+          }
+          className="border rounded-lg px-4 py-2"
+        >
+          <option value="">Select brand</option>
+          {brandOptions?.map(b => (
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
+          ))}
+        </select>
+
+        {/* Category */}
+        {form.brand && (
+          <select
+            value={form.category}
+            onChange={e => update("category", e.target.value)}
+            className="border rounded-lg px-4 py-2"
+          >
+            <option value="">Select category</option>
+            {brandOptions
+              .find(b => b.id === form.brand)
+              ?.categories.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+          </select>
+        )}
+
         <input placeholder="Product Name" onChange={e => update("name", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
         <textarea
@@ -378,6 +471,55 @@ function removeExternalLink(id) {
         ))}
       </div>
     </div>
+
+
+    {/* 🧩 Facets */}
+{facetSchema && (
+  <div className="space-y-4 border-t pt-6">
+    <h2 className="text-lg font-semibold">Product Facets</h2>
+
+    <div className="space-y-6">
+      {facetSchema.facets.map(facet => (
+        <div
+          key={facet.key}
+          className="p-4 rounded-xl border bg-slate-50 space-y-3"
+        >
+          <p className="text-sm font-medium">{facet.label}</p>
+
+          <div className="flex flex-wrap gap-3">
+            {facet.options.map(opt => {
+              const selected = facets[facet.key]?.includes(opt);
+
+              return (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() =>
+                    setFacets(prev => ({
+                      ...prev,
+                      [facet.key]: selected
+                        ? prev[facet.key].filter(v => v !== opt)
+                        : [...prev[facet.key], opt],
+                    }))
+                  }
+                  className={`px-3 py-1.5 rounded-lg border text-sm transition
+                    ${
+                      selected
+                        ? "bg-black text-white"
+                        : "bg-white hover:bg-slate-100"
+                    }`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
 
         {/* 🔗 External Product Links */}
         <div className="space-y-4 border-t pt-6">

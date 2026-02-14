@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import ProductCard from "../components/marketplace/ProductCard";
 import ShopSidebar from "../components/marketplace/ShopSidebar";
 
@@ -8,10 +8,17 @@ export default function ShopPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [priceRange, setPriceRange] = useState([50, 500]);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [search, setSearch] = useState("");
+
+
+  const [filters, setFilters] = useState({
+    brand: null,
+    category: null,
+    facets: {},
+    price: [0, 10000],
+  });
 
   const pageSize = 12;
 
@@ -49,17 +56,70 @@ export default function ShopPage() {
     fetchProducts(false);
   }, [search]);
 
-  const filtered = products.filter(p => {
+  // useEffect(() => {
+  //   console.log(filters);
+  // },[filters])
+
+  const filtered = products.filter((p) => {
+    /* -------------------------
+      1. Brand Filter
+    --------------------------*/
+    console.log(p)
+    if (filters.brand && p.brand !== filters.brand) {
+      return false;
+    }
+
+    /* -------------------------
+      2. Category Filter
+    --------------------------*/
+    if (filters.category && p.category !== filters.category) {
+      return false;
+    }
+
+    /* -------------------------
+      3. Price Filter
+    --------------------------*/
     const price = Number(p.price) || 0;
-    return price >= priceRange[0] && price <= priceRange[1];
+    const min = filters.price?.[0] ?? 0;
+    const max = filters.price?.[1] ?? 10000;
+
+    if (price < min || price > max) {
+      return false;
+    }
+
+    /* -------------------------
+      4. Facet Filters (Dynamic)
+    --------------------------*/
+    const activeFacets = filters.facets || {};
+
+    for (const key in activeFacets) {
+      const selectedOptions = activeFacets[key];
+
+      if (!selectedOptions || selectedOptions.length === 0) continue;
+
+      const productValues = p.facets?.[key] || [];
+
+      // At least one selected option must match
+      const hasMatch = selectedOptions.some((opt) =>
+        productValues.includes(opt)
+      );
+
+      if (!hasMatch) {
+        return false;
+      }
+    }
+
+    return true;
   });
+
+
 
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
       <Header total={products.length} search={search} setSearch={setSearch} />
 
       <div className="flex flex-col lg:flex-row gap-12">
-        <ShopSidebar value={priceRange} onChange={setPriceRange} />
+        <ShopSidebar value={filters} onChange={setFilters} />
 
         <div className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

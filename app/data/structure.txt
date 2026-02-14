@@ -1,0 +1,31 @@
+{
+  id: 'fork-5',
+  slug: 'fork-5',
+  description: 'Perfect for weddings, events, and family functions, the 12” round plate offers ample space without bending or leaking.',
+  inStock: true,
+  images: {
+    main: 'https://res.cloudinary.com/dwowelh5v/image/upload/v1770447389/products/m5z8zsptorueiw34bui4.jpg',
+    gallery: [
+      'https://res.cloudinary.com/dwowelh5v/image/upload/v1770447387/products/r9p3scndrohewdfieuhk.jpg',
+      'https://res.cloudinary.com/dwowelh5v/image/upload/v1770447391/products/whrpgml4h80gvulw000w.jpg',
+      'https://res.cloudinary.com/dwowelh5v/image/upload/v1770447393/products/susg0o9yvmfod0shksot.jpg'
+    ]
+  },
+  variantAttributes: [
+    { key: 'Combo', label: 'Combo', type: 'select', options: ["5","10","15","20"] }
+  ],
+  createdBy: '2JjPvKy9auaw4VyXXF6hhQ5XKls2',
+  createdByEmail: 'admin@bl.com',
+  createdAt: Timestamp { _seconds: 1770447395, _nanoseconds: 599000000 },
+  updatedAt: Timestamp { _seconds: 1770447395, _nanoseconds: 599000000 },
+  updatedBy: null,
+  updatedByEmail: null,
+  externalLinks: [
+    { platform: 'amazon', url: 'https://www.amazon.in/' },
+    { platform: 'flipkart', url: 'flipkart.com' }
+  ],
+  brand: 'Wayleaf',
+  category: 'Utensils',
+  name: '12” Round Plate\n',
+  price: 49
+}
