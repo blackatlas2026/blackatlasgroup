@@ -5,10 +5,10 @@ import { requireAdmin } from "@/lib/auth/requireAdmin"; // helper to check super
 
 export async function POST(req) {
   // Superadmin check
-  const check = await requireAdmin(req,  true);
-  if (check instanceof NextResponse) return check;
+  // const check = await requireAdmin(req,  true);
+  // if (check instanceof NextResponse) return check;
 
-  const { email, password, displayName, admin } = await req.json();
+  const { email, password, displayName, superadmin } = await req.json();
 
   if (!email || !password) {
     return NextResponse.json(
@@ -26,16 +26,18 @@ export async function POST(req) {
     });
 
     // Set custom claims (admin role if applicable)
-    if (admin) {
-      await adminAuth.setCustomUserClaims(userRecord.uid, { admin: true });
-    }
+    await adminAuth.setCustomUserClaims(userRecord.uid, {
+    admin: true,
+    superadmin: superadmin,
+  });
 
     return NextResponse.json({
       success: true,
       uid: userRecord.uid,
       email: userRecord.email,
       displayName: userRecord.displayName,
-      admin: Boolean(admin),
+      admin: true,
+      superadmin: superadmin
     });
   } catch (err) {
     console.error("Error creating user:", err);

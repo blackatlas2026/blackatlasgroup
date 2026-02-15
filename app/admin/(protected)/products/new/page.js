@@ -6,8 +6,8 @@ import { useEffect } from "react";
 
 export default function AddProductPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
+  
+  const [submitStatus, setSubmitStatus] = useState("idle");
   const [variantAttributes, setVariantAttributes] = useState([]);
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [externalLinks, setExternalLinks] = useState([]);
@@ -37,7 +37,7 @@ export default function AddProductPage() {
   description: "",
   price: "",
   inStock: true,
-  featuredProduct: false, // ✅ NEW
+  featuredProducts: false, // ✅ NEW
 });
 
 useEffect(() => {
@@ -126,25 +126,11 @@ useEffect(() => {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  async function uploadImage() {
-    const data = new FormData();
-    data.append("file", imageFile);
-
-    const res = await fetch("/api/admin/upload-image", {
-      method: "POST",
-      body: data,
-    });
-
-    if (!res.ok) throw new Error("Image upload failed");
-
-    const img = await res.json();
-    return img.url;
-  }
+  
 
   async function uploadImages(files) {
-    const uploaded = [];
-
-    for (const file of files) {
+  const uploadedUrls = await Promise.all(
+    files.map(async (file) => {
       const data = new FormData();
       data.append("file", file);
 
@@ -153,61 +139,67 @@ useEffect(() => {
         body: data,
       });
 
-      if (!res.ok) throw new Error("Image upload failed");
+      if (!res.ok) {
+        throw new Error("Image upload failed");
+      }
 
       const img = await res.json();
-      uploaded.push(img.url);
-    }
+      return img.url;
+    })
+  );
 
-    return uploaded;
-  }
+  return uploadedUrls;
+}
+
 
  
 
+
+
+
   async function submit() {
-  if (imageFiles.length === 0) {
-    alert("Please upload at least one image");
-    return;
+    if (imageFiles.length === 0) {
+      alert("Please upload at least one image");
+      return;
+    }
+
+    try {
+      setSubmitStatus("uploading");
+
+      const uploadedUrls = await uploadImages(imageFiles);
+
+      const mainImage = uploadedUrls[mainImageIndex];
+      const galleryImages = uploadedUrls.filter(
+        (_, idx) => idx !== mainImageIndex
+      );
+
+      setSubmitStatus("creating");
+
+      const res = await fetch("/api/admin/products/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          price: Number(form.price),
+          images: {
+            main: mainImage,
+            gallery: galleryImages,
+          },
+          variantAttributes,
+          externalLinks,
+          facets,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Create failed");
+
+      router.push("/admin");
+    } catch (err) {
+      alert(err.message);
+      setSubmitStatus("idle");
+    }
   }
 
-  setLoading(true);
-
-  try {
-    const uploadedUrls = await uploadImages(imageFiles);
-
-    const mainImage = uploadedUrls[mainImageIndex];
-
-    const galleryImages = uploadedUrls.filter(
-      (_, idx) => idx !== mainImageIndex
-    );
-
-    const res = await fetch("/api/admin/products/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        price: Number(form.price),
-
-        images: {
-          main: mainImage,
-          gallery: galleryImages,
-        },
-
-        variantAttributes,
-        externalLinks,
-        facets,
-      }),
-    });
-
-    if (!res.ok) throw new Error("Create failed");
-
-    router.push("/admin/dashboard");
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    setLoading(false);
-  }
-}
 
 
 
@@ -301,7 +293,7 @@ function removeExternalLink(id) {
 
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <div className="max-w-3xl mx-auto p-8 border border-gray-200 rounded-2xl">
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
 
       <div className="grid gap-4">
@@ -316,7 +308,7 @@ function removeExternalLink(id) {
               category: "", // reset category on brand change
             }))
           }
-          className="border rounded-lg px-4 py-2"
+          className="border border-gray-200 rounded-lg px-4 py-2"
         >
           <option value="">Select brand</option>
           {brandOptions?.map(b => (
@@ -331,7 +323,7 @@ function removeExternalLink(id) {
           <select
             value={form.category}
             onChange={e => update("category", e.target.value)}
-            className="border rounded-lg px-4 py-2"
+            className="border border-gray-200 rounded-lg px-4 py-2"
           >
             <option value="">Select category</option>
             {brandOptions
@@ -345,10 +337,10 @@ function removeExternalLink(id) {
         )}
 
         
-        <input placeholder="Product Name" onChange={e => update("name", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+        <input placeholder="Product Name" onChange={e => update("name", e.target.value)} className="input  border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
        
         <div>
-          <input placeholder="Slug" value={form.slug} onChange={e => update("slug", e.target.value)} className="input w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />
+          <input placeholder="Slug" value={form.slug} onChange={e => update("slug", e.target.value)} className="input w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
           <p className="text-sm text-gray-500">
             URL: /products/{form.slug}
           </p>
@@ -364,7 +356,7 @@ function removeExternalLink(id) {
               </span>
             )}
             {slugStatus === "taken" && (
-              <span className="text-red-600">
+              <span className="text-orange-500">
                 ✗ Slug already taken
               </span>
             )}
@@ -373,7 +365,7 @@ function removeExternalLink(id) {
         </div>
         <textarea
           placeholder="Description"
-          className="h-32 input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="h-32 input  border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
           onChange={e => update("description", e.target.value)}
         />
 
@@ -381,7 +373,7 @@ function removeExternalLink(id) {
           type="number"
           placeholder="Price"
           onChange={e => update("price", e.target.value)}
-          className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="input  border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
 
         {/* 🔥 Image Upload */}
@@ -391,8 +383,7 @@ function removeExternalLink(id) {
           accept="image/*"
           multiple
           onChange={e => setImageFiles(Array.from(e.target.files))}
-          className="border rounded-lg p-2"
-        />
+          className="w-full border border-gray-200 rounded-xl p-1  file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-800 file:text-white hover:file:bg-gray-900"        />
 
         {imageFiles.length > 0 && (
           <div className="grid grid-cols-3 gap-4 mt-4">
@@ -402,8 +393,8 @@ function removeExternalLink(id) {
               return (
                 <div
                   key={idx}
-                  className={`relative border rounded-lg p-2 cursor-pointer ${
-                    mainImageIndex === idx ? "ring-2 ring-red-500" : ""
+                  className={`relative border border-gray-200 rounded-lg p-2 cursor-pointer ${
+                    mainImageIndex === idx ? "ring-2 ring-orange-400" : ""
                   }`}
                   onClick={() => setMainImageIndex(idx)}
                 >
@@ -415,7 +406,7 @@ function removeExternalLink(id) {
                   />
 
                   {mainImageIndex === idx && (
-                    <span className="absolute top-1 left-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded">
+                    <span className="absolute top-1 left-1 bg-orange-500 text-white text-xs px-2 py-0.5 rounded">
                       Main
                     </span>
                   )}
@@ -436,7 +427,7 @@ function removeExternalLink(id) {
         <button
           type="button"
           onClick={addVariantAttribute}
-          className="text-sm px-4 py-2 rounded-lg border hover:bg-slate-100"
+          className="text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-slate-100"
         >
           + Add Attribute
         </button>
@@ -452,7 +443,7 @@ function removeExternalLink(id) {
         {variantAttributes.map(attr => (
           <div
             key={attr.id}
-            className="p-4 rounded-xl border bg-slate-50 space-y-4"
+            className="p-4 rounded-xl border border-gray-200 bg-slate-50 space-y-4"
           >
             <div className="grid md:grid-cols-3 gap-3">
               <input
@@ -461,7 +452,7 @@ function removeExternalLink(id) {
                 onChange={e =>
                   updateVariantAttr(attr.id, "key", e.target.value)
                 }
-                className="border rounded-lg px-3 py-2"
+                className="border border-gray-200 rounded-lg px-3 py-2"
               />
 
               <input
@@ -470,7 +461,7 @@ function removeExternalLink(id) {
                 onChange={e =>
                   updateVariantAttr(attr.id, "label", e.target.value)
                 }
-                className="border rounded-lg px-3 py-2"
+                className="border border-gray-200 rounded-lg px-3 py-2"
               />
 
               <select
@@ -478,7 +469,7 @@ function removeExternalLink(id) {
                 onChange={e =>
                   updateVariantAttr(attr.id, "type", e.target.value)
                 }
-                className="border rounded-lg px-3 py-2"
+                className="border border-gray-200 rounded-lg px-3 py-2"
               >
                 <option value="select">Select</option>
                 <option value="color">Color</option>
@@ -499,12 +490,12 @@ function removeExternalLink(id) {
                         updateOption(attr.id, i, e.target.value)
                       }
                       placeholder="Option value"
-                      className="flex-1 border rounded-lg px-3 py-2"
+                      className="flex-1 border border-gray-200 rounded-lg px-3 py-2"
                     />
                     <button
                       type="button"
                       onClick={() => removeOption(attr.id, i)}
-                      className="text-red-500"
+                      className="text-orange-400"
                     >
                       ✕
                     </button>
@@ -514,7 +505,7 @@ function removeExternalLink(id) {
                 <button
                   type="button"
                   onClick={() => addOption(attr.id)}
-                  className="text-sm text-red-600 hover:underline"
+                  className="text-sm text-orange-500 hover:underline"
                 >
                   + Add option
                 </button>
@@ -524,7 +515,7 @@ function removeExternalLink(id) {
             <button
               type="button"
               onClick={() => removeVariantAttribute(attr.id)}
-              className="text-sm text-red-500"
+              className="text-sm text-orange-400"
             >
               Remove Attribute
             </button>
@@ -543,7 +534,7 @@ function removeExternalLink(id) {
       {facetSchema.facets.map(facet => (
         <div
           key={facet.key}
-          className="p-4 rounded-xl border bg-slate-50 space-y-3"
+          className="p-4 rounded-xl border border-gray-200 bg-slate-50 space-y-3"
         >
           <p className="text-sm font-medium">{facet.label}</p>
 
@@ -563,10 +554,10 @@ function removeExternalLink(id) {
                         : [...prev[facet.key], opt],
                     }))
                   }
-                  className={`px-3 py-1.5 rounded-lg border text-sm transition
+                  className={`px-3 py-1.5 rounded-lg border border-gray-200 text-sm transition
                     ${
                       selected
-                        ? "bg-black text-white"
+                        ? "bg-gray-800 text-white"
                         : "bg-white hover:bg-slate-100"
                     }`}
                 >
@@ -629,7 +620,7 @@ function removeExternalLink(id) {
                 <button
                   type="button"
                   onClick={() => removeExternalLink(link.id)}
-                  className="absolute top-2 right-2 text-slate-400 hover:text-red-500"
+                  className="absolute top-2 right-2 text-slate-400 hover:text-orange-400"
                 >
                   ✕
                 </button>
@@ -653,20 +644,26 @@ function removeExternalLink(id) {
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={form.featuredProduct}
-            onChange={e => update("featuredProduct", e.target.checked)}
+            checked={form.featuredProducts}
+            onChange={e => update("featuredProducts", e.target.checked)}
           />
           Featured product
         </label>
 
         <button
-        
-          disabled={loading || slugStatus === "taken" || slugStatus === "checking"}
+          disabled={
+            submitStatus !== "idle" ||
+            slugStatus === "taken" ||
+            slugStatus === "checking"
+          }
           onClick={submit}
-          className="bg-black text-white py-3 rounded-lg hover:bg-red-600 transition"
+          className="bg-gray-800 text-white py-3 rounded-lg hover:bg-orange-500 transition disabled:bg-gray-200"
         >
-          {loading ? "Creating..." : "Create Product"}
+          {submitStatus === "uploading" && "Uploading Images..."}
+          {submitStatus === "creating" && "Creating Product..."}
+          {submitStatus === "idle" && "Create Product"}
         </button>
+
       </div>
     </div>
   );

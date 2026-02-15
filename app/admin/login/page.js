@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
       }
 
       // ✅ Success
-      router.push("/admin/dashboard");
+      router.push("/admin");
     } catch (err) {
       console.error(err);
       setError("Invalid credentials or not an admin.");

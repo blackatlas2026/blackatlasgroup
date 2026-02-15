@@ -99,6 +99,8 @@ body {
   }
 }
 
+
+
 @keyframes slide-in-right {
   from {
     opacity: 0;
@@ -108,6 +110,13 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
+
+
+
+
+
+
+  
 }/* Reveal animation */
 .reveal {
   opacity: 0;

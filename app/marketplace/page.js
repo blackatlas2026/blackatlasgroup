@@ -22,54 +22,65 @@ export default function ShopPage() {
 
   const pageSize = 12;
 
-  async function fetchProducts(append = false) {
-    if (!hasMore && append) return;
+async function fetchProducts(append = false, customCursor = null) {
+  if (!hasMore && append) return;
 
-    setLoading(true);
-    try {
-      const url = new URL("/api/products/list", window.location.origin);
-      url.searchParams.set("limit", pageSize);
-      if (cursor) url.searchParams.set("cursor", cursor);
-      if (search) url.searchParams.set("search", search);
+  setLoading(true);
 
-      const res = await fetch(url.toString());
-      if (!res.ok) throw new Error("Failed to fetch products");
+  try {
+    const url = new URL("/api/products/list", window.location.origin);
+    url.searchParams.set("limit", pageSize);
 
-      const data = await res.json();
-
-      if (append) {
-        setProducts(prev => [...prev, ...data.products]);
-      } else {
-        setProducts(data.products);
-      }
-
-      setCursor(data.nextCursor);
-      setHasMore(data.hasMore);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (append && customCursor) {
+      url.searchParams.set("cursor", customCursor);
     }
+
+    if (search) {
+      url.searchParams.set("search", search);
+    }
+
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error("Failed to fetch products");
+
+    const data = await res.json();
+
+    if (append) {
+      setProducts(prev => [...prev, ...data.products]);
+    } else {
+      setProducts(data.products);
+    }
+
+    setCursor(data.nextCursor);
+    setHasMore(data.hasMore);
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
   }
+}
 
 
 
   useEffect(() => {
-  setCursor(null);
-  setHasMore(true);
-  fetchProducts(false);
-}, [search]);
+    console.log(products);
+  },[products])
+
+
+//   useEffect(() => {
+//   setCursor(null);
+//   setHasMore(true);
+//   fetchProducts(false);
+// }, [search]);
 
 useEffect(() => {
   const delay = setTimeout(() => {
     setCursor(null);
     setHasMore(true);
-    fetchProducts(false);
+    fetchProducts(false, null);
   }, 400);
 
   return () => clearTimeout(delay);
 }, [search]);
-
   // useEffect(() => {
   //   console.log(filters);
   // },[filters])
@@ -78,7 +89,7 @@ useEffect(() => {
     /* -------------------------
       1. Brand Filter
     --------------------------*/
-    console.log(p)
+    // console.log(p)
     if (filters.brand && p.brand !== filters.brand) {
       return false;
     }

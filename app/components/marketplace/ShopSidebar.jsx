@@ -70,9 +70,9 @@ useEffect(() => {
 
 
 
-  useEffect(() => {
-    console.log(facetSchema)
-  },[facetSchema])
+  // useEffect(() => {
+  //   console.log(facetSchema)
+  // },[facetSchema])
 
 
   /* ----------------------------------
@@ -158,7 +158,8 @@ useEffect(() => {
             {brandOptions.map((b) => (
               <label
                 key={b.id}
-                className="flex justify-between items-center cursor-pointer"
+                className="flex justify-between items-center cursor-pointer transition-all duration-300 hover:translate-x-1 hover:text-red-600"
+
               >
                 <div className="flex gap-3 items-center">
                   <input
@@ -188,6 +189,11 @@ useEffect(() => {
 
 
           {/* CATEGORY (only after brand selected) */}
+          <div className={`${
+            selectedBrand 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 -translate-y-2 pointer-events-none'
+          } transition-all duration-300 ease-out space-y-8 `}>
             {selectedBrand && (
               <MobileSection
                 title="Category"
@@ -219,17 +225,26 @@ useEffect(() => {
                   ))}
               </MobileSection>
             )}
+            </div>
 
 
           {/* ----------------------------------
               Dynamic Facets (Only after brand selected)
           ---------------------------------- */}
-          {selectedBrand && value?.category && facetSchema && (
-            <>
-              
-                
 
-              {facetSchema.facets?.map((facet) => (
+          
+          {/* {selectedBrand && value?.category && facetSchema && (
+            
+          )} */}
+
+          <div className={`${
+            selectedBrand && value?.category && facetSchema 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 -translate-y-2 pointer-events-none'
+          } transition-all duration-300 ease-out space-y-8 `}>
+            {selectedBrand && value?.category && facetSchema && (
+              <>
+                {facetSchema.facets?.map((facet) => (
                 <MobileSection
                   key={facet.key}
                   title={facet.label}
@@ -267,8 +282,13 @@ useEffect(() => {
               >
                 Reset All Filters
               </button>
-            </>
-          )}
+              </>
+            )}
+          </div>
+
+          
+
+
         </div>
       </div>
     </aside>
@@ -293,9 +313,12 @@ function MobileSection({ title, isOpen, onToggle, children }) {
 
       <div
         className={`
-          overflow-hidden transition-all duration-300
-          ${isOpen ? "max-h-[1000px] mt-4" : "max-h-0"}
-          lg:max-h-none lg:mt-6
+          overflow-hidden transition-all duration-500 ease-in-out
+          ${isOpen
+            ? "max-h-[1000px] opacity-100 translate-y-0 mt-4"
+            : "max-h-0 opacity-0 -translate-y-2"}
+          transform
+          lg:max-h-none lg:opacity-100 lg:translate-y-0 lg:mt-6
         `}
       >
         <div className="space-y-4">{children}</div>

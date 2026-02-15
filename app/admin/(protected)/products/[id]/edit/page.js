@@ -8,6 +8,7 @@ export default function EditProductPage() {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("idle");
   const [initialLoading, setInitialLoading] = useState(true);
   
   const [variantAttributes, setVariantAttributes] = useState([]);
@@ -20,6 +21,7 @@ export default function EditProductPage() {
 const [mainImageUrl, setMainImageUrl] = useState(null); // existing main URL
 const [existingImages, setExistingImages] = useState([]);
 const [imageFiles, setImageFiles] = useState([]);
+const [newPreviews, setNewPreviews] = useState([]);
 const [mainImageId, setMainImageId] = useState(null);
 
  
@@ -37,7 +39,7 @@ const [mainImageId, setMainImageId] = useState(null);
     description: "",
     price: "",
     inStock: true,
-    featuredProduct: false,
+    featuredProducts: false,
   });
 
 
@@ -49,12 +51,12 @@ const [mainImageId, setMainImageId] = useState(null);
       const res = await fetch(`/api/products/${id}`);
       if (!res.ok) {
         alert("Product not found");
-        router.push("/admin/dashboard");
+        router.push("/admin");
         return;
       }
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       setForm({
         slug: data.slug || "",
@@ -64,7 +66,7 @@ const [mainImageId, setMainImageId] = useState(null);
         description: data.description || "",
         price: data.price || "",
         inStock: data.inStock ?? true,
-        featuredProduct: data.featuredProduct ?? false,
+        featuredProducts: data.featuredProducts ?? false,
       });
 
       setVariantAttributes(data.variantAttributes || []);
@@ -113,9 +115,9 @@ const [mainImageId, setMainImageId] = useState(null);
     loadBrands();
   }, []);
 
-  useEffect(() =>{
-  console.log(variantAttributes);
-},[variantAttributes])
+//   useEffect(() =>{
+//   console.log(variantAttributes);
+// },[variantAttributes])
 
 
   // 🔥 Load facet schema
@@ -141,9 +143,8 @@ const [mainImageId, setMainImageId] = useState(null);
   }
 
   async function uploadImages(files) {
-    const uploaded = [];
-
-    for (const file of files) {
+  const uploadedUrls = await Promise.all(
+    files.map(async (file) => {
       const data = new FormData();
       data.append("file", file);
 
@@ -152,72 +153,78 @@ const [mainImageId, setMainImageId] = useState(null);
         body: data,
       });
 
+      if (!res.ok) {
+        throw new Error("Image upload failed");
+      }
+
       const img = await res.json();
-      uploaded.push(img.url);
+      return img.url;
+    })
+  );
+
+  return uploadedUrls;
+}
+
+
+ async function submit() {
+  try {
+    setSubmitStatus("uploading");
+
+    let uploadedUrls = [];
+
+    if (imageFiles.length > 0) {
+      uploadedUrls = await uploadImages(imageFiles);
     }
 
-    return uploaded;
-  }
+    setSubmitStatus("saving");
 
-  async function submit() {
-    console.log("presses");
-    setLoading(true);
+    const selectedImage = allImages.find(
+      img => img.id === mainImageId
+    );
 
-    try {
-      // 1️⃣ Upload new images
-      let uploadedUrls = [];
+    let finalMain = null;
 
-      if (imageFiles.length > 0) {
-        uploadedUrls = await uploadImages(imageFiles);
+    if (selectedImage) {
+      if (selectedImage.type === "existing") {
+        finalMain = selectedImage.value;
+      } else {
+        const index = imageFiles.findIndex(
+          (_, i) => `new-${i}` === selectedImage.id
+        );
+        finalMain = uploadedUrls[index];
       }
-
-      const selectedImage = allImages.find(img => img.id === mainImageId);
-
-      let finalMain = null;
-
-      if (selectedImage) {
-        if (selectedImage.type === "existing") {
-          finalMain = selectedImage.value;
-        } else {
-          const index = imageFiles.findIndex(
-            (_, i) => `new-${i}` === selectedImage.id
-          );
-          finalMain = uploadedUrls[index];
-        }
-      }
-
-      const finalGallery = [
-        ...existingImages,
-        ...uploadedUrls,
-      ].filter(url => url !== finalMain);
-
-
-
-      const res = await fetch(`/api/admin/products/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          price: Number(form.price),
-          images: {
-            main: finalMain,
-            gallery: finalGallery,
-          },
-          variantAttributes,
-          externalLinks,
-          facets,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Update failed");
-
-      router.push("/admin/dashboard");
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setLoading(false);
     }
+
+    const finalGallery = [
+      ...existingImages,
+      ...uploadedUrls,
+    ].filter(url => url !== finalMain);
+
+    const res = await fetch(`/api/admin/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        price: Number(form.price),
+        images: {
+          main: finalMain,
+          gallery: finalGallery,
+        },
+        variantAttributes,
+        externalLinks,
+        facets,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Update failed");
+
+    router.push("/admin");
+  } catch (err) {
+    alert(err.message);
+    setSubmitStatus("idle");
   }
+}
+
 
 
 
@@ -300,9 +307,7 @@ function addExternalLink() {
   ]);
 }
 
-function update(key, value) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
+
 
 function updateExternalLink(id, key, value) {
   setExternalLinks(l =>
@@ -334,19 +339,29 @@ const oldPreviews = [
   })),
 ];
 
-const newPreviews = imageFiles.map((file, index) => ({
-  id: `new-${index}`,
-  type: "new",
-  value: file,
-  preview: URL.createObjectURL(file),
-}));
+
+
+useEffect(() => {
+  const previews = imageFiles.map((file, index) => ({
+    id: `new-${index}`,
+    type: "new",
+    value: file,
+    preview: URL.createObjectURL(file),
+  }));
+
+  setNewPreviews(previews);
+
+  return () => {
+    previews.forEach(p => URL.revokeObjectURL(p.preview));
+  };
+}, [imageFiles]);
 
 const allImages = [...oldPreviews, ...newPreviews];
 
 
 
 
-  console.log(allImages);
+  // console.log(allImages);
 
   if (initialLoading) {
     return <div className="p-8">Loading...</div>;
@@ -440,6 +455,17 @@ const allImages = [...oldPreviews, ...newPreviews];
 
         {/* 🔥 Image Upload */}
         {/* 🔥 Image Upload */}
+
+
+
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={e => setImageFiles(Array.from(e.target.files))}
+          className="w-full border border-gray-200 rounded-xl p-1  file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-800 file:text-white hover:file:bg-gray-900"        />
+
+
 {allImages.length > 0 && (
   <div className="grid grid-cols-3 gap-4 mt-4">
     {allImages.map((img) => (
@@ -739,20 +765,26 @@ const allImages = [...oldPreviews, ...newPreviews];
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={form.featuredProduct}
-            onChange={e => update("featuredProduct", e.target.checked)}
+            checked={form.featuredProducts}
+            onChange={e => update("featuredProducts", e.target.checked)}
           />
           Featured product
         </label>
 
         <button
-        
-          disabled={loading}
+          disabled={submitStatus !== "idle"}
           onClick={submit}
-          className="bg-black text-white py-3 rounded-lg hover:bg-red-600 transition"
+          className="bg-black text-white py-3 rounded-lg hover:bg-red-600 transition disabled:bg-gray-300"
         >
-          {loading ? "Editing..." : "Edit Product"}
+          {submitStatus === "uploading" && "Uploading Images..."}
+          {submitStatus === "saving" && "Saving Changes..."}
+          {submitStatus === "idle" && "Edit Product"}
+
+          {submitStatus !== "idle" && (
+            <span className="ml-2 inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          )}
         </button>
+
       </div>
     </div>
   );

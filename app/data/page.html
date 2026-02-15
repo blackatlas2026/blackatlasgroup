@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Super Admin | User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display transition-colors duration-200">
+<div class="flex h-screen overflow-hidden flex-col">
+<!-- Sidebar -->
+
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-8 py-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center"><div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+<div>
+<h2 class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight">User Management</h2>
+<p class="text-zinc-500 text-sm mt-1">Manage system administrators and permission levels.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none w-64 transition-all" placeholder="Search users..." type="text"/>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">person_add</span>
+                    Create New
+                </button>
+</div>
+</div></header>
+<!-- Table Section -->
+<div class="p-8 max-w-7xl mx-auto w-full">
+<div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 text-xs uppercase tracking-wider font-bold">
+<th class="px-6 py-4">Name</th>
+<th class="px-6 py-4">Email</th>
+<th class="px-6 py-4">Role</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
+<!-- Row 1 -->
+<tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-300">AJ</div>
+<span class="font-medium dark:text-white">Alex Johnson</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">alex.j@company.com</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">Super Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium dark:text-zinc-300">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Add Admin</button>
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm">Remove Admin</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-300">SC</div>
+<span class="font-medium dark:text-white">Sarah Chen</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">s.chen@company.com</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-black uppercase tracking-widest">Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium dark:text-zinc-300">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Add Admin</button>
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm">Remove Admin</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-300">MR</div>
+<span class="font-medium dark:text-white">Mike Ross</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">m.ross@company.com</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-black uppercase tracking-widest">Viewer</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-600"></span>
+<span class="text-sm font-medium text-zinc-400">Inactive</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg border border-primary text-primary hover:bg-primary/5 transition-colors">Add Admin</button>
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed">Remove Admin</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-300">ER</div>
+<span class="font-medium dark:text-white">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">elena.r@company.com</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-black uppercase tracking-widest">Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium dark:text-zinc-300">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Add Admin</button>
+<button class="text-xs font-bold px-3 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm">Remove Admin</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+<p class="text-xs text-zinc-500 dark:text-zinc-400">Showing <span class="font-bold">4</span> of <span class="font-bold">24</span> users</p>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<div class="flex items-center">
+<button class="w-8 h-8 rounded-lg bg-primary text-white text-xs font-bold">1</button>
+<button class="w-8 h-8 rounded-lg text-zinc-600 dark:text-zinc-400 text-xs font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800">2</button>
+<button class="w-8 h-8 rounded-lg text-zinc-600 dark:text-zinc-400 text-xs font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800">3</button>
+</div>
+<button class="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

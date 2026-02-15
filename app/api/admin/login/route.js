@@ -16,7 +16,7 @@ export async function POST(req) {
     // 🔍 Verify Firebase ID token
     const decoded = await adminAuth.verifyIdToken(idToken);
 
-    console.log(decoded);
+    // console.log(decoded);
 
     // 🔒 Admin check
     if (!decoded.admin) {
