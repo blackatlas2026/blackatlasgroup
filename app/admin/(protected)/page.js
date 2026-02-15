@@ -165,6 +165,7 @@ export default function ProductsPage() {
             <thead className="bg-gray-50  ">
               <tr>
                 <th className="px-6 py-4 text-sm font-semibold">Name</th>
+                <th className="px-6 py-4 text-sm font-semibold">Brand</th>
                 <th className="px-6 py-4 text-sm font-semibold">Category</th>
                 <th className="px-6 py-4 text-sm font-semibold">Price</th>
                 <th className="px-6 py-4 text-sm font-semibold text-right">Actions</th>
@@ -175,6 +176,7 @@ export default function ProductsPage() {
               {filtered.map(product => (
                 <tr key={product.id} className="hover:bg-gray-50   transition">
                   <td className="px-6 py-4 font-medium">{product.name}</td>
+                  <td className="px-6 py-4 font-medium uppercase">{product.brand}</td>
                   <td className="px-6 py-4 text-gray-500">{product.category || "-"}</td>
                   <td className="px-6 py-4 font-semibold">₹{product.price}</td>
                   <td className="px-6 py-4">
