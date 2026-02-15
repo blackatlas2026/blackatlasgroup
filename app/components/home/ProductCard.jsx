@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function ProductCard({ product }) {
   return (
-    <div className="border border-pink-100 rounded-2xl p-6 flex flex-col items-center bg-white text-center shadow-xl">
+    <div className="border border-gray-300 rounded-2xl p-6 flex flex-col items-center bg-white text-center ">
 
       {/* Category */}
       <span className="mb-4 inline-block rounded-full border border-red-500 px-3 py-1 text-xs font-bold tracking-widest text-rose-700">

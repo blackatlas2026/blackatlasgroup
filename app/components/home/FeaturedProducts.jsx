@@ -50,9 +50,10 @@ export default function FeaturedProducts({ products }) {
 
           {/* Scroll Container */}
           <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-10 justify-left md:justify-center"
-          >
+  ref={scrollRef}
+  className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-10 px-4 md:px-0"
+  style={{ scrollPaddingLeft: '24px', scrollPaddingRight: '24px' }}
+>
             {products.map(product => (
               <div
                 key={product.id}
