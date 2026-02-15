@@ -52,9 +52,23 @@ export default function ShopPage() {
     }
   }
 
+
+
   useEffect(() => {
+  setCursor(null);
+  setHasMore(true);
+  fetchProducts(false);
+}, [search]);
+
+useEffect(() => {
+  const delay = setTimeout(() => {
+    setCursor(null);
+    setHasMore(true);
     fetchProducts(false);
-  }, [search]);
+  }, 400);
+
+  return () => clearTimeout(delay);
+}, [search]);
 
   // useEffect(() => {
   //   console.log(filters);

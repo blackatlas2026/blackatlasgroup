@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminAuth } from "@/lib/firebase-admin";
 
-const ADMIN_EMAILS = [
-  "shazilmohemmedkp@gmail.com",
-  "admin2@gmail.com",
-  "admin@blackatlas.com"
-];
 
 export async function POST(req) {
   try {

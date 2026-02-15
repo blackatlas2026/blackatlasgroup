@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-
   const [nextCursor, setNextCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  
 
   const router = useRouter();
 
@@ -45,18 +44,41 @@ export default function ProductsPage() {
     }
   }
 
+  async function handleLogout() {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+      });
+
+      // Redirect to admin login
+      router.push("/admin/login");
+      router.refresh();
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  }
+
   useEffect(() => {
     fetchProducts({ reset: true });
   }, []);
 
-  // Client-side search (admin-friendly)
   const filtered = products.filter(p =>
     p.name?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Products</h1>
+
+        <button
+          onClick={handleLogout}
+          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+        >
+          Logout
+        </button>
+      </div>
 
       {/* Search & Add */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
@@ -102,7 +124,12 @@ export default function ProductsPage() {
                 </td>
                 <td className="px-4 py-2 border">
                   <div className="flex gap-2">
-                    <button className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500" onClick={() => {router.push(`/admin/products/${product.slug}/edit`)}}>
+                    <button
+                      className="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500"
+                      onClick={() =>
+                        router.push(`/admin/products/${product.slug}/edit`)
+                      }
+                    >
                       Edit
                     </button>
                     <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
@@ -115,10 +142,7 @@ export default function ProductsPage() {
 
             {!loading && filtered.length === 0 && (
               <tr>
-                <td
-                  colSpan={4}
-                  className="text-center text-gray-500 py-6"
-                >
+                <td colSpan={4} className="text-center text-gray-500 py-6">
                   No products found
                 </td>
               </tr>
