@@ -13,7 +13,7 @@ import ShopByBrand2  from "./components/home/ShopByBrand2";
 
 import { getFeaturedProducts } from "@/lib/services/productService";
 
-
+export const dynamic = 'force-dynamic'; 
 
 export default async function Home() {
 
