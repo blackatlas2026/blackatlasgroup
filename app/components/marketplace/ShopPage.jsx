@@ -180,23 +180,27 @@ useEffect(() => {
 
 function Header({ total, search, setSearch }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-12">
       <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
         Explore Our <span className="text-red-600 font-chamberi">Collection</span>
       </h1>
 
-      <div className="flex items-center gap-3">
-        <span className="text-sm text-slate-500">
-          Showing {total} results
-        </span>
+      <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full md:w-auto">
+        {/* Search bar */}
         <input
           type="text"
           placeholder="Search products..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="bg-transparent p-2 border-slate-400 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 border "
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-auto bg-transparent p-2 border-slate-400 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 border"
         />
+
+        {/* Showing total results */}
+        <span className="text-sm text-slate-500 md:ml-3">
+          Showing {total} results
+        </span>
       </div>
     </div>
   );
 }
+
