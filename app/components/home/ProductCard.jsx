@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+
 export default function ProductCard({ product }) {
   return (
     <div className="border border-pink-100 rounded-2xl p-6 flex flex-col items-center bg-white text-center shadow-xl">
@@ -35,9 +38,12 @@ export default function ProductCard({ product }) {
       </p>
 
       {/* CTA */}
-      <button className="mt-auto w-full rounded-full px-8 py-4 bg-slate-900 text-white font-bold rounded-full transition-all duration-300 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/30">
+      <Link
+        href={`/product/${product.slug}`}
+        className="mt-auto w-full rounded-full px-8 py-4 bg-slate-900 text-white font-bold transition-all duration-300 hover:bg-red-600 hover:shadow-lg hover:shadow-red-600/30 text-center"
+      >
         Buy Now
-      </button>
+      </Link>
 
     </div>
   )

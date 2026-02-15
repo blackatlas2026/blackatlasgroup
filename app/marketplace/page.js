@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "../components/marketplace/ProductCard";
 import ShopSidebar from "../components/marketplace/ShopSidebar";
 
@@ -13,8 +14,12 @@ export default function ShopPage() {
   const [search, setSearch] = useState("");
 
 
+   const searchParams = useSearchParams();
+  const initialBrand = searchParams.get("brand"); // e.g., "Nike"
+
+
   const [filters, setFilters] = useState({
-    brand: null,
+    brand: initialBrand || null,
     category: null,
     facets: {},
     price: [0, 10000],
@@ -174,7 +179,7 @@ function Header({ total, search, setSearch }) {
   return (
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
       <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-        Explore Our <span className="text-red-600">Collection</span>
+        Explore Our <span className="text-red-600 font-chamberi">Collection</span>
       </h1>
 
       <div className="flex items-center gap-3">
@@ -186,7 +191,7 @@ function Header({ total, search, setSearch }) {
           placeholder="Search products..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="bg-transparent p-2 border-slate-200 rounded-lg text-sm focus:ring-red-600 focus:border-red-600"
+          className="bg-transparent p-2 border-slate-400 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 border "
         />
       </div>
     </div>

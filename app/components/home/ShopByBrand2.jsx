@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 export default function ShopByBrand2() {
   // Mock backend data
@@ -112,13 +113,14 @@ export default function ShopByBrand2() {
                   {brand.description}
                 </p>
 
-                <a
-                  href="#"
+                <Link
+                
+                  href={`/marketplace?brand=${encodeURIComponent(brand.name.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"))}`}
                   className="inline-flex items-center gap-2 justify-center px-8 py-4 bg-slate-900 text-white font-bold rounded-full transition-all duration-300 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/30"
                 >
                   {brand.cta}
                   <span aria-hidden> →</span>
-                </a>
+                </Link>
               </div>
             </div>
 

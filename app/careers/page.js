@@ -69,7 +69,7 @@ export default function Careers() {
         {/* HEADER */}
         <header className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Join Our <span className="text-rose-600">Team</span>
+            Join Our <span className="text-rose-600 font-chamberi ">Team</span>
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto">
             Shape the future of premium retail. We're looking for passionate individuals who strive for excellence.
@@ -123,11 +123,11 @@ export default function Careers() {
                         <label className="text-sm font-semibold text-slate-700" htmlFor="position">Position Applied For</label>
                         <select className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900 appearance-none" name="position" required="">
                         <option disabled=""  value="">Select a role</option>
-                        <option value="frontend">Frontend Developer</option>
-                        <option value="product-designer">Senior Product Designer</option>
+                        
+                        <option value="media-executive">Media Executive</option>
                         <option value="marketing-manager">Marketing Manager</option>
-                        <option value="customer-success">Customer Excellence Lead</option>
-                        <option value="supply-chain">Supply Chain Analyst</option>
+                        <option value="customer-success">Customer Excellence</option>
+                        
                         </select>
                     </div>
                 </div>

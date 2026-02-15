@@ -2,6 +2,7 @@
 
 import { useRef } from "react"
 import ProductCard from "./ProductCard"
+import Link from "next/link";
 
 export default function FeaturedProducts({ products }) {
   const scrollRef = useRef(null)
@@ -77,13 +78,16 @@ export default function FeaturedProducts({ products }) {
 
         {/* Bottom CTA */}
         <div className="flex justify-center mt-16">
-          <button className="flex items-center gap-3 border-2 border-black px-8 py-3 rounded-full font-bold hover:bg-black hover:text-white transition">
-            SHOP ALL PRODUCTS
-            <span className="h-6 w-6 rounded-full bg-rose-600 text-white flex items-center justify-center">
-              →
-            </span>
-          </button>
-        </div>
+            <Link
+                href="/marketplace"
+                className="flex items-center gap-3 border-2 border-black px-8 py-3 rounded-full font-bold hover:bg-black hover:text-white transition"
+              >
+                SHOP ALL PRODUCTS
+                <span className="h-6 w-6 rounded-full bg-rose-600 text-white flex items-center justify-center">
+                  →
+                </span>
+              </Link>
+            </div>
 
       </div>
     </section>

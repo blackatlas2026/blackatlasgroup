@@ -18,7 +18,7 @@ export default function Footer() {
               black atlas
             </p>
             <p className="text-sm text-white/60 mt-0.5">
-              Digital products & experiences
+              Shaping Ideas into Reality
             </p>
           </div>
 

@@ -1,20 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
   
   const slides = [
   {
-    badge: '10K+ HAPPY CUSTOMERS',
+    badge: 'Custom Concepts',
     titleB: 'Built from',
     titleR: 'Thought to Thing',
     desc: 'From concept sketches to finished products — we design, engineer, and manufacture ideas.',
     imgDesktop: '/images/hero/hero_01.jpg',
     imgMobile: '/images/hero/hero_01_portrait.jpg',
     dotColor: 'bg-red-400',
-    buttonText: 'Get Quote'
+    buttonText: 'Get Quote',
+    link: '/contact'
   },
   {
     badge: 'PROFESSIONAL SERVICES',
@@ -24,7 +26,8 @@ export default function Hero() {
     imgDesktop: '/images/hero/hero_02.jpg',
     imgMobile: '/images/hero/hero_02_portrait.jpg',
     dotColor: 'bg-red-400',
-    buttonText: 'Buy Now'
+    buttonText: 'Buy Now',
+    link: '/marketplace'
   }
 ];
 
@@ -120,10 +123,13 @@ export default function Hero() {
         {slides[0].desc}
       </p>
 
-      <button className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-sm font-medium shadow-xl hover:bg-black/90 transition-all">
-        {slides[0].buttonText}
-        <span className={`h-2 w-2 rounded-full ${slides[0].dotColor}`} />
-      </button>
+      <Link
+      href={slides[0].link} // add the URL you want to navigate to
+      className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-sm font-medium shadow-xl hover:bg-black/90 transition-all"
+    >
+      {slides[0].buttonText}
+      <span className={`h-2 w-2 rounded-full ${slides[0].dotColor}`} />
+    </Link>
     </div>
 
     {/* Empty column for desktop balance */}
@@ -179,10 +185,10 @@ export default function Hero() {
         {slides[1].desc}
       </p>
 
-      <button className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-sm font-medium shadow-xl hover:bg-black/90 transition-all">
+      <Link  href= {slides[1].link} className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-sm font-medium shadow-xl hover:bg-black/90 transition-all">
         {slides[1].buttonText}
         <span className={`h-2 w-2 rounded-full ${slides[1].dotColor}`} />
-      </button>
+      </Link>
     </div>
 
     {/* Empty column for desktop balance */}
