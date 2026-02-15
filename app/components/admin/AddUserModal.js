@@ -55,10 +55,10 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-lg bg-white dark:bg-background-dark rounded-xl shadow-2xl border border-gray-100 dark:border-orange-400/20 overflow-hidden">
+      <div className="w-full max-w-lg bg-white   rounded-xl shadow-2xl border border-gray-100   overflow-hidden">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 dark:border-orange-400/10">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100  ">
           <h3 className="text-2xl font-bold">Create New Admin</h3>
           <button onClick={onClose}>
             <span className="material-symbols-outlined">close</span>
@@ -75,7 +75,7 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-orange-400/5 border rounded-lg"
+              className="w-full px-4 py-3 bg-gray-50   border rounded-lg"
               placeholder="e.g. John Doe"
             />
           </div>
@@ -88,7 +88,7 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-orange-400/5 border rounded-lg"
+              className="w-full px-4 py-3 bg-gray-50   border rounded-lg"
               placeholder="john@company.com"
             />
           </div>
@@ -101,13 +101,13 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-orange-400/5 border rounded-lg"
+              className="w-full px-4 py-3 bg-gray-50   border rounded-lg"
               placeholder="Enter temporary password"
             />
           </div>
 
           {/* Superadmin Toggle */}
-          <div className="flex items-center justify-between bg-gray-50 dark:bg-orange-400/5 p-4 rounded-lg">
+          <div className="flex items-center justify-between bg-gray-50   p-4 rounded-lg">
             <span className="text-sm font-medium">Make Superadmin</span>
             <input
               type="checkbox"

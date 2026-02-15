@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import {v4 as uuidv4} from "uuid";
+
 export default function AddProductPage() {
   const router = useRouter();
   
@@ -207,7 +209,7 @@ useEffect(() => {
   setVariantAttributes(v => [
     ...v,
     {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       key: "",
       label: "",
       type: "select",
@@ -271,7 +273,7 @@ function addExternalLink() {
   setExternalLinks(l => [
     ...l,
     {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       platform: "",
       url: "",
     },

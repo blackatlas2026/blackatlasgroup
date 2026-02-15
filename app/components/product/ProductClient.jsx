@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import ProductHero from "@/app/components/product/ProductHero";
-import ProductBento from "@/app/components/product/ProductBento";
-import ProductTable from "@/app/components/product/ProductTable";
+import ProductHeroSkeleton from "@/app/components/product/ProductHeroSkeleton";
+
+
 import WayLeafCards from "@/app/components/product/WayLeafCards";
-import { productPageCards } from "@/app/data/servicesCards";
+
 
 export default function ProductClient({ slug }) {
   const [product, setProduct] = useState(null);
@@ -25,7 +26,14 @@ export default function ProductClient({ slug }) {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  if (loading) return <p>Loading product...</p>;
+  if (loading) {
+      return (
+        <>
+          <ProductHeroSkeleton />
+        </>
+      );
+    }
+
   if (error) return <p className="text-red-600">{error}</p>;
   if (!product) return <p>Product not found</p>;
 
@@ -34,7 +42,7 @@ export default function ProductClient({ slug }) {
       <ProductHero product={product} />
       {/* <ProductBento cards={productPageCards} /> */}
       <WayLeafCards></WayLeafCards>
-      {product.specs != null && <ProductTable specs={product.specs} />}
+      {/* {product.specs != null && <ProductTable specs={product.specs} />} */}
       <div className="w-full mx-auto px-6  mt-9 py-24 text-center bg-white rounded-4xl flex flex-col items-center">
             <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Bulk & Institutional Orders</h3>
             <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">For bulk purchases, corporate gifting, events, hotels, or export requirements — get in touch with us directly for custom pricing and volumes.</p>

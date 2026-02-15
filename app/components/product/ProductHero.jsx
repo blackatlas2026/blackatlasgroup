@@ -56,13 +56,14 @@ export default function ProductHero({ product }) {
           />
         </div>
 
-       <div className="grid grid-cols-4 justify-items-center">
+      <div className="flex flex-wrap justify-center gap-4 max-w-[420px] mx-auto">
         {[product.images.main, ...product.images.gallery].map((img, idx) => (
           <button
             key={`${img}-${idx}`}
             type="button"
             onClick={() => setActiveImage(img)}
-            className={`aspect-square w-4/5 max-w-20 rounded-2xl overflow-hidden border transition
+            className={`w-[22%] min-w-[70px] max-w-[90px] aspect-square
+              rounded-2xl overflow-hidden border transition
               ${
                 activeImage === img
                   ? "border-red-600 ring-2 ring-red-200"
@@ -78,6 +79,7 @@ export default function ProductHero({ product }) {
           </button>
         ))}
       </div>
+
 
 
       </div>

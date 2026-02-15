@@ -70,10 +70,10 @@ export default function SuperAdminPage() {
   }
 
 return (
-  <div className="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+  <div className="flex-1 overflow-y-auto bg-background-light  ">
 
     {/* Header */}
-    <header className="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
+    <header className="sticky top-0 z-10 bg-background-light/80   backdrop-blur-md border-b border-zinc-200  ">
       
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-6 lg:gap-0 lg:justify-between lg:items-center">
         
@@ -101,7 +101,7 @@ return (
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search users..."
-                className="pl-10 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-full text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none w-full transition-all"
+                className="pl-10 pr-4 py-2 bg-white   border border-zinc-200   rounded-full text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none w-full transition-all"
               />
             </div>
 
@@ -117,14 +117,14 @@ return (
 
         {/* RIGHT SIDE - PROFILE */}
         {name && (
-          <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm self-start lg:self-auto">
+          <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white   border border-zinc-200   shadow-sm self-start lg:self-auto">
             
             <div className="w-9 h-9 rounded-full bg-orange-400 text-white flex items-center justify-center text-sm font-bold">
               {name.charAt(0).toUpperCase()}
             </div>
 
             <div className="leading-tight text-right">
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm font-semibold text-zinc-900  ">
                 {name}
               </p>
               <p className="text-[11px] text-zinc-500 tracking-wide">
@@ -146,14 +146,14 @@ return (
         </p>
       )}
 
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white   border border-zinc-200   rounded-2xl overflow-hidden shadow-sm">
         
         {/* Horizontal Scroll Wrapper */}
         <div className="overflow-x-auto">
           <table className="min-w-[900px] w-full text-left border-collapse">
             
             <thead>
-              <tr className="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 text-xs uppercase tracking-wider font-bold">
+              <tr className="bg-zinc-50   text-zinc-500   text-xs uppercase tracking-wider font-bold">
                 <th className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">Email</th>
                 <th className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">Name</th>
                 <th className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">Role</th>
@@ -162,17 +162,17 @@ return (
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <tbody className="divide-y divide-zinc-100  ">
               
               {filtered.map(user => (
                 <tr
                   key={user.uid}
-                  className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
+                  className="hover:bg-zinc-50   transition-colors"
                 >
                   
                   <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-300">
+                      <div className="w-8 h-8 rounded-full bg-zinc-200   flex items-center justify-center text-xs font-bold text-zinc-600  ">
                         {getInitials(user.email)}
                       </div>
                       <span className="font-medium">{user.email}</span>
@@ -189,7 +189,7 @@ return (
                         Super Admin
                       </span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+                      <span className="px-2.5 py-1 rounded-full bg-zinc-100   text-zinc-500   text-[10px] font-black uppercase tracking-widest">
                         Admin
                       </span>
                     )}
@@ -235,7 +235,7 @@ return (
         />
 
         {/* Footer */}
-        <div className="px-4 sm:px-6 py-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-4 border-t border-zinc-100   flex items-center justify-between">
           <p className="text-xs text-zinc-500">
             Showing <span className="font-bold">{filtered.length}</span> users
           </p>
