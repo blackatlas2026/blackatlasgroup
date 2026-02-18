@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
+
 import ProductHero from "@/app/components/product/ProductHero";
 import ProductHeroSkeleton from "@/app/components/product/ProductHeroSkeleton";
 
@@ -34,7 +36,7 @@ export default function ProductClient({ slug }) {
       );
     }
 
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (error) return notFound();
   if (!product) return <p>Product not found</p>;
 
   return (
