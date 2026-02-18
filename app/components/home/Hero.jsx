@@ -61,17 +61,17 @@ export default function Hero() {
     }, []);
 
   return (
-    <section className="relative py-20 overflow-hidden bg-[#fcfcfc]">
+    <section className="relative py-10 overflow-hidden bg-[#fcfcfc]">
       {/* SVG mask */}
       
       
       <div className="relative mx-auto px-6 md:px-12 lg:px-24 z-10 ">
         {/* Height container */}
-        <div className="h-[80vh] md:h-[90vh] relative"> 
+        <div className="h-[70vh] md:h-[85vh] relative"> 
           {/* Card 1 - Scale/Fade */}
             <div 
               className={`
-                absolute inset-0 min-h-[75vh] md:min-h-[90vh]
+                absolute inset-0 min-h-[65vh] md:min-h-[80vh]
                 px-8 py-10 md:py-14 md:px-16
                 transition-all duration-700 ease-out
                 transition-[border-radius]
@@ -141,7 +141,7 @@ export default function Hero() {
 
           {/* Card 2 - Scale/Fade */}
          <div 
-            className={`absolute inset-0   min-h-[75vh] md:min-h-[90vh] rounded-[20px_200px_20px_100px]  md:rounded-[40px_300px_40px_150px] px-8 py-10 md:py-14 md:px-16
+            className={`absolute inset-0   min-h-[65vh] md:min-h-[80vh] rounded-[20px_200px_20px_100px]  md:rounded-[40px_300px_40px_150px] px-8 py-10 md:py-14 md:px-16
             transition-all duration-700 ease-out flex
             items-start md:items-center
             ${current === 1 ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-90 z-10'}`}

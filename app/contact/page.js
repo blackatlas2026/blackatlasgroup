@@ -42,8 +42,8 @@ export default function ContactUs() {
             Contact <span className="text-red-600 font-chamberi">Us</span>
           </h1>
           <p className="mt-2 max-w-xl text-slate-500">
-            Have a question about a product, shipping, or our brands? Our elite support
-            team is here to assist you 24/7.
+            Have a question about a product, services, or our brands? Our support
+            team is here to assist you.
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export default function ContactUs() {
                 <div>
                   <p className="font-semibold text-slate-900">Our Office</p>
                   <p className="text-sm text-slate-500">
-                    TC 16/585, Ayodhya, Kottukal,<br /> Balaramapuram, Thiruvananthapuram, 695501
+                    Door No: 16/585, Ayodhya, Kottukal,<br /> Balaramapuram, Thiruvananthapuram, 695501
                   </p>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export default function ContactUs() {
                     type="text"
                     name="name"
                     required
-                    placeholder="John Doe"
+                    placeholder="Rajesh Kumar"
                     className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40"
                   />
                 </div>
@@ -160,7 +160,7 @@ export default function ContactUs() {
                     type="email"
                     name="email"
                     required
-                    placeholder="john@example.com"
+                    placeholder="rajesh@example.com"
                     className="w-full rounded-xl bg-slate-100 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-red-500/40"
                   />
                 </div>

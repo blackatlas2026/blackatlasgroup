@@ -23,23 +23,24 @@ export default function BentoCard({ card }) {
       />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 gradient-overlay" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black/70" />
+
 
       {/* Optional badge */}
-      {card.badge && (
+      {/* {card.badge && (
         <div className="absolute top-6 left-6 z-20 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
           {card.badge}
         </div>
-      )}
+      )} */}
 
       {/* Optional icon */}
-      {card.icon && (
+      {/* {card.icon && (
         <div className="absolute top-6 right-6 z-20 bg-red-500 text-white w-12 h-12 rounded-2xl flex items-center justify-center">
           <span className="material-symbols-outlined">
             {card.icon}
           </span>
         </div>
-      )}
+      )} */}
 
 
       {card.arrow && (<div className="absolute top-6 right-6 z-20">

@@ -8,6 +8,63 @@ export default function Careers() {
     const [loading, setLoading] = useState(false);
     const [cvFile, setCvFile] = useState(null);
 
+    async function uploadCV(file) {
+      // 1️⃣ Validate client-side first (important)
+      const allowedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Invalid file type");
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error("File too large (max 10MB)");
+      }
+
+      // 2️⃣ Get signed upload params
+      const sigRes = await fetch("/api/careers/sign-cv-upload", {
+        method: "POST",
+      });
+
+      if (!sigRes.ok) {
+        throw new Error("Failed to get upload signature");
+      }
+
+      const { timestamp, signature, apiKey, cloudName } =
+        await sigRes.json();
+
+      // 3️⃣ Upload directly to Cloudinary
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("api_key", apiKey);
+      formData.append("timestamp", timestamp);
+      formData.append("signature", signature);
+      formData.append("folder", "careers/cv");
+      formData.append("resource_type", "raw");
+      formData.append("use_filename", "true");
+      formData.append("unique_filename", "true");
+
+      const uploadRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!uploadRes.ok) {
+        throw new Error("CV upload failed");
+      }
+
+      const data = await uploadRes.json();
+
+      return data.secure_url;
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -17,21 +74,7 @@ export default function Careers() {
 
         // 1️⃣ Upload CV to Cloudinary
         if (cvFile) {
-            const uploadData = new FormData();
-            uploadData.append("file", cvFile);
-
-            const uploadRes = await fetch("/api/careers/upload-cv", {
-            method: "POST",
-            body: uploadData,
-            });
-
-            const uploadJson = await uploadRes.json();
-
-            if (!uploadRes.ok) {
-            throw new Error(uploadJson.error || "CV upload failed");
-            }
-
-            cvUrl = uploadJson.downloadUrl;
+          cvUrl = await uploadCV(cvFile);
         }
 
         // 2️⃣ Send Email via EmailJS
@@ -63,7 +106,7 @@ export default function Careers() {
 
 
   return (
-    <section className="pt-32 pb-24 bg-slate-50  transition-colors">
+    <section className="pt-12 pb-24 bg-slate-50  transition-colors">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HEADER */}
@@ -72,7 +115,7 @@ export default function Careers() {
             Join Our <span className="text-rose-600 font-chamberi ">Team</span>
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto">
-            Shape the future of premium retail. We're looking for passionate individuals who strive for excellence.
+            We're looking for passionate individuals who strive for excellence.
           </p>
         </header>
 
@@ -104,32 +147,38 @@ export default function Careers() {
                         <input
                             name="full_name"
                             type="text"
-                            placeholder="John Doe"
+                            placeholder="Rajesh Kumar"
                             required
                             className="w-full px-5 py-4 rounded-xl bg-slate-50  border-transparent focus:bg-white transition-all text-slate-900"
                         />
                         </div>
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700" htmlFor="email">Email Address</label>
-                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="email" placeholder="john@example.com" required="" type="email"/>
+                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="email" placeholder="rajesh@example.com" required="" type="email"/>
                     </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700" htmlFor="phone">Phone Number</label>
-                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="phone" placeholder="+1 (555) 000-0000" required="" type="tel"/>
+                        <input className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900" name="phone" placeholder="+91 1234567890" required="" type="tel"/>
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700" htmlFor="position">Position Applied For</label>
-                        <select className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900 appearance-none" name="position" required="">
-                        <option disabled=""  value="">Select a role</option>
-                        
-                        <option value="media-executive">Media Executive</option>
-                        <option value="marketing-manager">Marketing Manager</option>
-                        <option value="customer-success">Customer Excellence</option>
-                        
-                        </select>
+                      <label
+                        className="text-sm font-semibold text-slate-700"
+                        htmlFor="position"
+                      >
+                        Position Applied For
+                      </label>
+
+                      <input
+                        name="position"
+                        type="text"
+                        placeholder="e.g. Media Executive"
+                        required
+                        className="w-full px-5 py-4 rounded-xl bg-slate-50 border-transparent focus:bg-white transition-all text-slate-900"
+                      />
                     </div>
+
                 </div>
                 <div className="space-y-2">
                     <label className="text-sm font-semibold text-slate-700" htmlFor="linkedin">LinkedIn Profile URL</label>
