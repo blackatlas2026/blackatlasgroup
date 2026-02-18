@@ -1,9 +1,10 @@
 'use client';
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+
 import { useSearchParams } from "next/navigation";
 
-
+import ProductCardSkeleton from "./ProductCardSkeleton";
 import ProductCard from "./ProductCard";
 import ShopSidebar from "./ShopSidebar";
 
@@ -19,6 +20,7 @@ export default function ShopPage() {
 
    const searchParams = useSearchParams();
   const initialBrand = searchParams.get("brand"); // e.g., "Nike"
+  const loadMoreRef = useRef(null);
 
 
   const [filters, setFilters] = useState({
@@ -31,6 +33,7 @@ export default function ShopPage() {
   const pageSize = 12;
 
 async function fetchProducts(append = false, customCursor = null) {
+  if (loading) return; // 
   if (!hasMore && append) return;
 
   setLoading(true);
@@ -89,6 +92,37 @@ useEffect(() => {
 
   return () => clearTimeout(delay);
 }, [search]);
+
+
+// useEffect(() => {
+//   fetchProducts(false, null);
+// }, []);
+
+
+useEffect(() => {
+  if (!hasMore) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && !loading) {
+        fetchProducts(true, cursor);
+      }
+    },
+    { threshold: 0.5 }
+  );
+
+  const el = loadMoreRef.current;
+
+  if (el) observer.observe(el);
+
+  return () => {
+    if (el) observer.unobserve(el);
+  };
+}, [cursor, hasMore, loading]);
+
+
+
+
   // useEffect(() => {
   //   console.log(filters);
   // },[filters])
@@ -159,19 +193,23 @@ useEffect(() => {
             {filtered.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
 
-          <div className="mt-16 text-center">
-            {hasMore ? (
-              <button
-                onClick={() => fetchProducts(true)}
-                disabled={loading}
-                className="bg-slate-900 text-white px-12 py-4 rounded-lg font-bold uppercase tracking-widest text-sm hover:bg-red-600 transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-red-600/40"
-              >
-                {loading ? "Loading..." : "Load More Products"}
-              </button>
-            ) : (
-              <p className="text-gray-500 mt-4">No more products</p>
+          <div className="">
+            {loading && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
             )}
+
+            {!loading && !hasMore && (
+              <p className="text-gray-500 text-center mt-4">
+                No more products
+              </p>
+            )}
+            {hasMore && <div ref={loadMoreRef} className="h-10" />}
           </div>
+
         </div>
       </div>
     </main>
