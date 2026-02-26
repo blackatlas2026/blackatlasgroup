@@ -110,21 +110,9 @@ export default function ProductsPage() {
 
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
 
-          {isSuperadmin && (
-            <button
-              onClick={() => router.push("/admin/superadmin")}
-              className="w-full sm:w-auto px-5 py-2 rounded-lg bg-orange-100 text-orange-600 font-semibold hover:bg-orange-200 transition"
-            >
-              Manage Users
-            </button>
-          )}
+          
 
-          <button
-            onClick={handleLogout}
-            className="w-full sm:w-auto px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition"
-          >
-            Logout
-          </button>
+          
 
         </div>
       </div>

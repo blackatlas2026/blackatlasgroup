@@ -1,6 +1,32 @@
 import { NextResponse } from "next/server";
-import { updateBrand,deactivateBrand } from "@/lib/services/productService";
+import { updateBrand,deactivateBrand,updateBrandStory,getBrandById } from "@/lib/services/productService";
 import { requireAdmin } from "@/lib/auth/requireAdmin";
+
+
+export async function GET(request, { params }) {
+  try {
+    // 🔐 Protect route
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
+    const { id } = await params;
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Brand ID required' }, { status: 400 });
+    }
+
+    const brand = await getBrandById(id);
+    
+    if (!brand) {
+      return NextResponse.json({ error: 'Brand not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(brand);
+  } catch (error) {
+    console.error('Error fetching brand:', error);
+    return NextResponse.json({ error: 'Failed to fetch brand' }, { status: 500 });
+  }
+}
 
 export async function PUT(req, { params }) {
   try {
@@ -8,7 +34,7 @@ export async function PUT(req, { params }) {
     const auth = await requireAdmin(req);
     if (auth instanceof NextResponse) return auth;
 
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     if (!id) {
@@ -38,7 +64,7 @@ export async function DELETE(req, { params }) {
     const auth = await requireAdmin(req);
     if (auth instanceof NextResponse) return auth;
 
-    const { id } = params;
+    const { id } = await params;
 
     await deactivateBrand(id);
 
@@ -49,5 +75,21 @@ export async function DELETE(req, { params }) {
       { error: "Failed to delete brand" },
       { status: 500 }
     );
+  }
+}
+
+
+
+
+export async function PATCH(request, { params }) {
+  try {
+    const { id } = await params;
+    const data = await request.json();
+    
+    await updateBrandStory(id, data);
+    
+    return Response.json({ success: true });
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 400 });
   }
 }
