@@ -145,23 +145,48 @@ const [mainImageId, setMainImageId] = useState(null);
     setForm(f => ({ ...f, [key]: value }));
   }
 
-  async function uploadImages(files) {
+async function uploadImages(files) {
+  if (!files?.length) return [];
+
+  // 1️⃣ Get signed upload data (protected route)
+  const sigRes = await fetch("/api/admin/sign-cloudinary", {
+    method: "POST",
+    body: JSON.stringify({ folder: "products" }),
+  });
+
+  if (!sigRes.ok) {
+    throw new Error("Failed to get upload signature");
+  }
+
+  const { timestamp, signature, apiKey, cloudName } =
+    await sigRes.json();
+
+  
   const uploadedUrls = await Promise.all(
     files.map(async (file) => {
-      const data = new FormData();
-      data.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("api_key", apiKey);
+      formData.append("timestamp", timestamp);
+      formData.append("signature", signature);
+      formData.append("folder", "products");
 
-      const res = await fetch("/api/admin/upload-image", {
-        method: "POST",
-        body: data,
-      });
+      const uploadRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      if (!res.ok) {
+      if (!uploadRes.ok) {
         throw new Error("Image upload failed");
       }
 
-      const img = await res.json();
-      return img.url;
+      const data = await uploadRes.json();
+
+
+      return data.secure_url;
     })
   );
 

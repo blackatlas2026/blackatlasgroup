@@ -160,6 +160,7 @@ async function uploadImages(files) {
   // 1️⃣ Get signed upload data (protected route)
   const sigRes = await fetch("/api/admin/sign-cloudinary", {
     method: "POST",
+    body: JSON.stringify({ folder: "products" }),
   });
 
   if (!sigRes.ok) {

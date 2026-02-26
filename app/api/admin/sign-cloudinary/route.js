@@ -8,9 +8,10 @@ export async function POST(req) {
   if (auth instanceof NextResponse) return auth;
 
   const timestamp = Math.round(new Date().getTime() / 1000);
+  const { folder } = await req.json();
 
   const paramsToSign = {
-    folder: "products",
+    folder,
     timestamp,
   };
 

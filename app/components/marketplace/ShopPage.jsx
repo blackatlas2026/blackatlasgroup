@@ -18,7 +18,7 @@ export default function ShopPage() {
   const [search, setSearch] = useState("");
 
 
-   const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const initialBrand = searchParams.get("brand"); // e.g., "Nike"
   const loadMoreRef = useRef(null);
 
@@ -30,7 +30,7 @@ export default function ShopPage() {
     price: [0, 10000],
   });
 
-  const pageSize = 12;
+  const pageSize = 6;
 
 async function fetchProducts(append = false, customCursor = null) {
   if (loading) return; // 

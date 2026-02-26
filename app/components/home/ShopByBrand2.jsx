@@ -1,24 +1,26 @@
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
 
-export default function ShopByBrand2() {
+export default function ShopByBrand2({brands}) {
   // Mock backend data
-  const brands = [
-    {
-      name: "WAYLEAF",
-      description:
-        "Eco-friendly products designed for modern living.",
-      logo: "/brands/brand_01_wayleaf_logo.png", // same image used everywhere
-      cta: "Shop Now",
-    },
-    {
-      name: "B Studio",
-      description:
-        "Tradition, thoughtfully redesigned.",
-      logo: "/brands/brand_02_b_studio.png",
-      cta: "Shop Now",
-    },
-  ];
+  // const brands = [
+  //   {
+  //     name: "WAYLEAF",
+  //     description:
+  //       "Eco-friendly products designed for modern living.",
+  //     logo: "/brands/brand_01_wayleaf_logo.png", // same image used everywhere
+  //     cta: "Shop Now",
+  //   },
+  //   {
+  //     name: "B Studio",
+  //     description:
+  //       "Tradition, thoughtfully redesigned.",
+  //     logo: "/brands/brand_02_b_studio.png",
+  //     cta: "Shop Now",
+  //   },
+  // ];
+
 
   return (
     <section className="relative overflow-hidden py-24 px-6 lg:px-12 max-w-7xl mx-auto font-display text-slate-900">
@@ -110,7 +112,7 @@ export default function ShopByBrand2() {
                 </h3>
 
                 <p className="text-slate-500 max-w-xs mb-8">
-                  {brand.description}
+                  {brand.tagline}
                 </p>
 
                 <Link
@@ -118,7 +120,7 @@ export default function ShopByBrand2() {
                   href={`/marketplace?brand=${encodeURIComponent(brand.name.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"))}`}
                   className="inline-flex items-center gap-2 justify-center px-8 py-4 bg-slate-900 text-white font-bold rounded-full transition-all duration-300 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/30"
                 >
-                  {brand.cta}
+                  Shop Now
                   <span aria-hidden> →</span>
                 </Link>
               </div>

@@ -70,9 +70,9 @@ useEffect(() => {
 
 
 
-  // useEffect(() => {
-  //   console.log(facetSchema)
-  // },[facetSchema])
+  useEffect(() => {
+    console.log(facetSchema)
+  },[facetSchema])
 
 
   /* ----------------------------------

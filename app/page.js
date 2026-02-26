@@ -9,7 +9,7 @@ import ShopByBrand from "./components/home/ShopByBrand";
 import FeaturedProducts from "./components/home/FeaturedProducts";
 import TailwindTest from "./components/TailwindTest";
 import ShopByBrand2  from "./components/home/ShopByBrand2";
-
+import { getAllBrands } from "@/lib/services/productService";
 
 import { getFeaturedProducts } from "@/lib/services/productService";
 
@@ -18,12 +18,18 @@ export const dynamic = 'force-dynamic';
 export default async function Home() {
 
   const products = await getFeaturedProducts();
+  const brands = await getAllBrands();
+  const brandData = brands.map(brand => ({
+    name: brand.name,
+    tagline: brand.tagline,
+    logo: brand.logo
+  }));
   return (<div>
             
 
             <Hero/>
             {/* <WayLeafCards></WayLeafCards> */}
-            <ShopByBrand2/>
+            <ShopByBrand2 brands={brandData}/>
             <FeaturedProducts products={products} />
 
           </div>
