@@ -43,7 +43,7 @@ export default function ProductSchemaPage() {
     if (!brand) return;
 
     const selectedBrand = brands.find((b) => b.name === brand);
-    console.log("Selected brand:",selectedBrand);
+    
     if (selectedBrand) {
       setCategories(selectedBrand.categories || []);
       setCategory("");

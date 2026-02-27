@@ -22,10 +22,10 @@ export default function BrandStory({
 
 // ✅ FIXED useEffect
 useEffect(() => {
-  console.log("🔄 useEffect triggered:", { mode, initialData });
+  // console.log("🔄 useEffect triggered:", { mode, initialData });
   
   if (initialData) {
-    console.log("📝 Setting data:", initialData);
+    // console.log("📝 Setting data:", initialData);
     
     setSectionTitle(initialData.title || "");
     setStoryItems(
@@ -42,13 +42,13 @@ useEffect(() => {
 }, [mode, initialData]); // ✅ Dependencies
 
 // ✅ Debug AFTER state updates (separate effect)
-useEffect(() => {
-  console.log("✅ sectionTitle updated:", sectionTitle);
-}, [sectionTitle]);
+// useEffect(() => {
+//   console.log("✅ sectionTitle updated:", sectionTitle);
+// }, [sectionTitle]);
 
-useEffect(() => {
-  console.log("✅ storyItems updated:", storyItems.length);
-}, [storyItems]);
+// useEffect(() => {
+//   console.log("✅ storyItems updated:", storyItems);
+// }, [storyItems]);
 
   const getSignature = async () => {
     const res = await fetch("/api/admin/sign-cloudinary", {
@@ -107,7 +107,7 @@ useEffect(() => {
       await Promise.all(
         urls.map(async (url) => {
           const publicIdInfo = extractPublicId(url);
-          console.log(publicIdInfo);
+       
           if (publicIdInfo) {
             await fetch('/api/admin/delete-cloudinary', {
               method: 'POST',
@@ -127,17 +127,22 @@ useEffect(() => {
 
 
 
-  const handleImageUpload = async (itemId) => {
-    const file = fileInputRef.current?.files[0];
-    if (!file) return;
 
-    try {
-      const imageUrl = await uploadToCloudinary(file);
-      updateItem(itemId, "image", imageUrl);
-    } finally {
-      fileInputRef.current.value = "";
-    }
-  };
+  const handleImageUpload = async (itemId, event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  try {
+    setUploading((prev) => ({ ...prev, [itemId]: true }));
+
+    const imageUrl = await uploadToCloudinary(file);
+
+    updateItem(itemId, "image", imageUrl);
+  } finally {
+    setUploading((prev) => ({ ...prev, [itemId]: false }));
+    event.target.value = "";
+  }
+};
 
   // ✅ Cleanup on close WITHOUT saving
   const handleClose = async () => {
@@ -169,49 +174,6 @@ useEffect(() => {
     }
   };
 
-//   const handleClose = async () => {
-//     // Cleanup temp uploads when closing WITHOUT saving
-//     if (tempUploads.length > 0) {
-//       try {
-//         await Promise.all(
-//           tempUploads.map(url => 
-//             fetch('/api/admin/delete-cloudinary', {
-//               method: 'POST',
-//               headers: { 'Content-Type': 'application/json' },
-//               body: JSON.stringify({ public_id: extractPublicId(url) })
-//             })
-//           )
-//         );
-//       } catch (err) {
-//         console.warn('Cleanup failed:', err); // Don't block UX
-//       }
-//     }
-//     setTempUploads([]); // Reset
-//     onClose();
-//   };
-
-//   const handleImageUpload = async (itemId) => {
-//     const file = fileInputRef.current?.files[0];
-//     if (!file) {
-//       alert("Please select an image");
-//       return;
-//     }
-
-//     setUploading(prev => ({ ...prev, [itemId]: true }));
-
-//     try {
-//       const imageUrl = await uploadToCloudinary(file);
-//       updateItem(itemId, "image", imageUrl);
-//       // Reset file input
-//       if (fileInputRef.current) {
-//         fileInputRef.current.value = "";
-//       }
-//     } catch (error) {
-//       alert("Upload failed: " + error.message);
-//     } finally {
-//       setUploading(prev => ({ ...prev, [itemId]: false }));
-//     }
-//   };
 
   const addItem = () => {
     setStoryItems([
@@ -261,11 +223,17 @@ const deleteItem = async (id) => {
     setStoryItems(newItems);
   };
 
-  const updateItem = (id, key, value) => {
-    setStoryItems(storyItems.map((item) => 
+const updateItem = (id, key, value) => {
+  setStoryItems((prevItems) => {
+    const updatedItems = prevItems.map((item) =>
       item.id === id ? { ...item, [key]: value } : item
-    ));
-  };
+    );
+
+ 
+
+    return updatedItems;
+  });
+};
 
   if (!isOpen) return null;
 
@@ -350,34 +318,33 @@ const deleteItem = async (id) => {
 
                     {/* Upload Controls */}
                     <div className="space-y-2">
-                      {/* File Input (hidden) */}
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={() => handleImageUpload(item.id)}
-                        className="hidden"
-                      />
-                      
-                      {/* Upload Button */}
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading[item.id]}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all"
-                      >
-                        {uploading[item.id] ? (
-                          <>
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <span className="material-symbols-outlined text-base">cloud_upload</span>
-                            Upload Image
-                          </>
-                        )}
-                      </button>
+                      <label className="w-full">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleImageUpload(item.id, e)}
+                        />
+
+                        <div
+                          className={`w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold 
+                          bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl 
+                          hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl 
+                          transition-all cursor-pointer`}
+                        >
+                          {uploading[item.id] ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <span className="material-symbols-outlined text-base">cloud_upload</span>
+                              Upload Image
+                            </>
+                          )}
+                        </div>
+                      </label>
 
                       {/* URL Button */}
                       <button

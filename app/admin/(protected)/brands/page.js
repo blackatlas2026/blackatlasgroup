@@ -78,9 +78,9 @@ export default function BrandsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-//   useEffect(() => {
-//     console.log(brands);
-//   },[brands])
+  // useEffect(() => {
+  //   console.log(selectedBrand);
+  // },[selectedBrand])
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -240,6 +240,7 @@ export default function BrandsPage() {
         initialData={selectedBrand?.storySection}
         onSubmit={async (storyData) => {
   try {
+    // console.log("Submitting for brand:", selectedBrand);
     await fetch(`/api/admin/products/brands/${selectedBrand.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

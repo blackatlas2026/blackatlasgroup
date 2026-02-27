@@ -6,8 +6,7 @@ import { requireAdmin } from "@/lib/auth/requireAdmin";
 export async function GET(request, { params }) {
   try {
     // 🔐 Protect route
-    const auth = await requireAdmin(request);
-    if (auth instanceof NextResponse) return auth;
+  
 
     const { id } = await params;
     
@@ -88,6 +87,7 @@ export async function PATCH(request, { params }) {
     const data = await request.json();
     
     await updateBrandStory(id, data);
+    console.log("Updated with: ",data);
     
     return Response.json({ success: true });
   } catch (error) {

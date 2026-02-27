@@ -29,9 +29,9 @@ export default function AdminOverviewPage() {
 
     fetchDashboardData();
   }, []);
-  useEffect(() => {
-    console.log("Rcent producyt", recentProducts)
-  },[recentProducts])
+//   useEffect(() => {
+//     console.log("Rcent producyt", recentProducts)
+//   },[recentProducts])
 
   if (loading) {
     return <div className="p-8">Loading dashboard...</div>;
