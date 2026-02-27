@@ -149,12 +149,8 @@ export default function AdminLogin() {
             </form>
           </div>
 
-          {/* Card Footer */}
-          <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-center">
-            <p className="text-xs text-slate-500">
-              Protected by reCAPTCHA and Subject to Privacy Policy
-            </p>
-          </div>
+         
+         
         </div>
       </div>
     </main>
