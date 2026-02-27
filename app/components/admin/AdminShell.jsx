@@ -26,7 +26,7 @@ export default function AdminShell({ children }) {
           >
             ☰
           </button>
-          <span className="font-semibold">Admin</span>
+         
         </div>
 
         <main className="">

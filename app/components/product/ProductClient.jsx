@@ -3,6 +3,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 import ProductHero from "@/app/components/product/ProductHero";
 import ProductHeroSkeleton from "@/app/components/product/ProductHeroSkeleton";
@@ -37,9 +38,7 @@ export default function ProductClient({ slug }) {
   },
 ];
 
-  useEffect(() => {
-    console.log("Story section:", storySection); // Keep for debugging
-  }, [storySection]);
+  
 
   // 1. Product fetch
   useEffect(() => {
@@ -111,19 +110,19 @@ export default function ProductClient({ slug }) {
       <ProductHero product={product} />
       <StoryCards 
         stories={storySection?.stories } 
-        title={storySection?.title || "Discover WayLeaf"}
+        title={storySection?.title || ""}
       />
       <div className="w-full mx-auto px-6 mt-9 py-24 text-center bg-white rounded-4xl flex flex-col items-center">
         <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Bulk & Institutional Orders</h3>
         <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">
           For bulk purchases, corporate gifting, events, hotels, or export requirements — get in touch with us directly for custom pricing and volumes.
         </p>
-        <a 
+        <Link
           className="inline-block bg-red-500 text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-red-600 transition-all shadow-xl shadow-red-100" 
-          href="#"
+          href="/contact"
         >
           Enquire Now
-        </a>
+        </Link>
       </div>
     </>
   );

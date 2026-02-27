@@ -3,7 +3,7 @@ import ShopPage from '../components/marketplace/ShopPage';
 
 export default function MarketplacePage() {
   return (
-    <Suspense fallback={<div className="py-12 text-center">Loading marketplace...</div>}>
+    <Suspense fallback={<div className="py-12 text-center"></div>}>
       <ShopPage />
     </Suspense>
   );

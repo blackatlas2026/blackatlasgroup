@@ -73,69 +73,43 @@ return (
   <div className="flex-1 overflow-y-auto bg-background-light  ">
 
     {/* Header */}
-    <header className="sticky top-0 z-10 bg-background-light/80   backdrop-blur-md border-b border-zinc-200  ">
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-6 lg:gap-0 lg:justify-between lg:items-center">
-        
-        {/* LEFT SIDE */}
-        <div className="flex flex-col gap-4 w-full">
-          
-          {/* Title */}
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-              User Management
-            </h2>
-            <p className="text-zinc-500 text-sm mt-1">
-              Manage system administrators and permission levels.
-            </p>
-          </div>
+    <header className="sticky top-0 z-10 bg-background-light/80 backdrop-blur-md border-b border-zinc-200">
+  <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-6 lg:gap-0 lg:justify-between lg:items-center">
+    
+    {/* LEFT SIDE - Title Only */}
+    <div>
+      <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+        User Management
+      </h2>
+      <p className="text-zinc-500 text-sm mt-1">
+        Manage system administrators and permission levels.
+      </p>
+    </div>
 
-          {/* Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            
-            <div className="relative w-full sm:w-64">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-lg">
-                search
-              </span>
-              <input
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Search users..."
-                className="pl-10 pr-4 py-2 bg-white   border border-zinc-200   rounded-full text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none w-full transition-all"
-              />
-            </div>
-
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto bg-orange-400 text-white px-5 py-2 rounded-full font-bold shadow-md hover:bg-orange-400/90 transition-colors"
-            >
-              + Add User
-            </button>
-
-          </div>
-        </div>
-
-        {/* RIGHT SIDE - PROFILE */}
-        {name && (
-          <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white   border border-zinc-200   shadow-sm self-start lg:self-auto">
-            
-            <div className="w-9 h-9 rounded-full bg-orange-400 text-white flex items-center justify-center text-sm font-bold">
-              {name.charAt(0).toUpperCase()}
-            </div>
-
-            <div className="leading-tight text-right">
-              <p className="text-sm font-semibold text-zinc-900  ">
-                {name}
-              </p>
-              <p className="text-[11px] text-zinc-500 tracking-wide">
-                {isSuperadmin ? "Super Admin" : "Admin"}
-              </p>
-            </div>
-          </div>
-        )}
-
+    {/* RIGHT SIDE - Controls */}
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto">
+      <div className="relative w-full sm:w-64">
+        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-lg">
+          search
+        </span>
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search users..."
+          className="pl-10 pr-4 py-2 bg-white border border-zinc-200 rounded-full text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none w-full transition-all"
+        />
       </div>
-    </header>
+
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="w-full sm:w-auto bg-orange-400 text-white px-5 py-2 rounded-full font-bold shadow-md hover:bg-orange-400/90 transition-colors"
+      >
+        + Add User
+      </button>
+    </div>
+  </div>
+</header>
+
 
     {/* Table Section */}
     <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full">

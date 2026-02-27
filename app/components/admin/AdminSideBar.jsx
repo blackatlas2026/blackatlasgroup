@@ -161,23 +161,10 @@ export default function AdminSideBar({ isOpen, onClose }) {
       <div className="p-6">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-10">
-          <div className="bg-orange-600 p-1.5 rounded-lg">
-            <svg
-              className="h-6 w-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
+          
+        
           <span className="text-xl font-bold tracking-tight">
-            AdminPanel
+            Admin Panel
           </span>
         </div>
 

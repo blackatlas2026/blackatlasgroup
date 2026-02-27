@@ -88,55 +88,48 @@ export default function ProductsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background-light  p-4 sm:p-8">
+    <div className="flex flex-col min-h-screen bg-background-light  p-4 sm:p-8 gap-8">
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+      
 
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
-            Product Management
-          </h1>
+            <header className="sticky top-0 z-10 bg-background-light/80 backdrop-blur-md ">
+  <div className="max-w-7xl mx-auto  flex flex-col lg:flex-row gap-6 lg:gap-0 lg:justify-between lg:items-center">
+    
+    {/* LEFT SIDE - Title Only */}
+    <div>
+      <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+        Product Management
+      </h2>
+      <p className="text-zinc-500 text-sm mt-1">
+        Manage products.
+      </p>
+    </div>
 
-          {name && (
-            <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-              Welcome back,
-              <span className="ml-1 font-semibold text-gray-900  ">
-                {name}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-
-          
-
-          
-
-        </div>
+    {/* RIGHT SIDE - Controls */}
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto">
+      <div className="relative w-full sm:w-64">
+        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-lg">
+          search
+        </span>
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search products..."
+          className="pl-10 pr-4 py-2 bg-white border border-zinc-200 rounded-full text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none w-full transition-all"
+        />
       </div>
 
-      {/* Search + Add */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      <button
+        onClick={() => router.push("/admin/products/new")}
+        className="w-full sm:w-auto bg-orange-400 text-white px-5 py-2 rounded-full font-bold shadow-md hover:bg-orange-400/90 transition-colors"
+      >
+        + Add Product
+      </button>
+    </div>
+  </div>
+    </header>
 
-        <div className="relative w-full sm:max-w-sm">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full px-4 py-3 bg-white   border border-gray-200   rounded-full focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition"
-          />
-        </div>
 
-        <button
-          onClick={() => router.push("/admin/products/new")}
-          className="w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-orange-400/20 transition"
-        >
-          + Add Product
-        </button>
-      </div>
 
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg">

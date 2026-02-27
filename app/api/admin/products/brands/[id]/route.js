@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateBrand,deactivateBrand,updateBrandStory,getBrandById } from "@/lib/services/productService";
+import { updateBrand,deactivateBrand,updateBrandStory,getBrandById, deleteBrand } from "@/lib/services/productService";
 import { requireAdmin } from "@/lib/auth/requireAdmin";
 
 
@@ -66,7 +66,8 @@ export async function DELETE(req, { params }) {
 
     const { id } = await params;
 
-    await deactivateBrand(id);
+ 
+    await deleteBrand(id);
 
     return NextResponse.json({ success: true });
   } catch (error) {
