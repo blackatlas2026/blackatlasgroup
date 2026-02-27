@@ -260,7 +260,7 @@ const updateItem = (id, key, value) => {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-3xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-auto max-h-[90vh]">
+      <div className="w-full max-w-3xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-auto max-h-[90vh] scrollbar-hide">
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
           <h3 className="text-2xl font-bold">

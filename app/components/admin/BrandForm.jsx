@@ -116,7 +116,7 @@ export default function BrandForm({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[90vh] flex flex-col">
         
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
@@ -129,7 +129,8 @@ export default function BrandForm({
         </div>
 
         {/* Body */}
-        <form onSubmit={handleSubmit} className="px-8 py-6 space-y-6">
+        <form onSubmit={handleSubmit} 
+              className="flex-1 overflow-y-auto px-8 py-6 space-y-6 scrollbar-hide">
 
           {/* Brand Name */}
           <div className="space-y-2">
