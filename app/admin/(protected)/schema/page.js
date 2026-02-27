@@ -12,8 +12,8 @@ export default function ProductSchemaPage() {
     {
       key: "",
       label: "",
-      type: "Text",
-      options: ["", "", ""],
+      type: "select",
+       options: [],
     },
   ]);
 
@@ -48,7 +48,7 @@ export default function ProductSchemaPage() {
       setCategories(selectedBrand.categories || []);
       setCategory("");
       setFacets([
-        { key: "", label: "", type: "Text", options: ["", "", ""] },
+        { key: "", label: "", type: "select",  options: [] },
       ]);
     }
   }, [brand, brands]);
@@ -75,7 +75,7 @@ export default function ProductSchemaPage() {
             setFacets(data.facets);
           } else {
             setFacets([
-              { key: "", label: "", type: "Text", options: ["", "", ""] },
+              { key: "", label: "", type: "select",  options: [] },
             ]);
           }
         }
@@ -95,7 +95,7 @@ export default function ProductSchemaPage() {
   const addFacet = () => {
     setFacets([
       ...facets,
-      { key: "", label: "", type: "Text", options: ["", "", ""] },
+      { key: "", label: "", type: "select",  options: [] },
     ]);
   };
 
@@ -121,6 +121,14 @@ export default function ProductSchemaPage() {
     setFacets(newFacets);
   };
 
+  const removeOption = (facetIndex, optionIndex) => {
+    const newFacets = [...facets];
+    newFacets[facetIndex].options = newFacets[facetIndex].options.filter(
+        (_, i) => i !== optionIndex
+    );
+    setFacets(newFacets);
+  };
+
   const saveSchema = async () => {
     await fetch("/api/products/facets/schema", {
         method: "POST",
@@ -139,8 +147,8 @@ export default function ProductSchemaPage() {
         {
             key: "",
             label: "",
-            type: "Text",
-            options: ["", "", ""],
+            type: "select",
+             options: [],
         },
     ]);
     setCategory("");
@@ -167,8 +175,8 @@ export default function ProductSchemaPage() {
         {
           key: "",
           label: "",
-          type: "Text",
-          options: ["", "", ""],
+          type: "select",
+           options: [],
         },
       ]);
       setCategory("");
@@ -279,32 +287,47 @@ export default function ProductSchemaPage() {
                       updateFacet(fIndex, "type", e.target.value)
                     }
                   >
-                    <option>Select</option>
-                    <option>Text</option>
-                    <option>Number</option>
-                    <option>Dropdown</option>
+                    <option value={"select"}>select</option>
+                    {/* <option>Text</option>
+                    <option>Number</option> */}
+                   
                   </select>
                 </div>
 
-                {facet.options.map((opt, oIndex) => (
-                  <input
-                    key={oIndex}
-                    className="w-full rounded-3xl border border-gray-200 text-sm px-4 py-2 mb-2"
-                    placeholder={`Option ${oIndex + 1}`}
-                    value={opt}
-                    onChange={(e) =>
-                      updateOption(fIndex, oIndex, e.target.value)
-                    }
-                  />
-                ))}
+                {facet.type === "select" && (
+  <>
+    {facet.options.map((opt, oIndex) => (
+      <div key={oIndex} className="flex gap-2 mb-2">
+        <input
+          className="flex-1 rounded-3xl border border-gray-200 text-sm px-4 py-2"
+          placeholder={`Option ${oIndex + 1}`}
+          value={opt}
+          onChange={(e) =>
+            updateOption(fIndex, oIndex, e.target.value)
+          }
+        />
 
-                <button
-                  type="button"
-                  className="text-xs font-semibold text-purple-600"
-                  onClick={() => addOption(fIndex)}
-                >
-                  Add Option
-                </button>
+        <button
+          type="button"
+          className="text-md font-semibold text-red-600"
+          onClick={() => removeOption(fIndex, oIndex)}
+        >
+          x
+        </button>
+      </div>
+    ))}
+
+    <button
+      type="button"
+      className="text-xs font-semibold text-purple-600"
+      onClick={() => addOption(fIndex)}
+    >
+      Add Option
+    </button>
+  </>
+)}
+
+
               </div>
             ))}
 

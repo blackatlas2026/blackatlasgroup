@@ -32,7 +32,7 @@ export default function ProductHero({ product }) {
     const message = `
   Hi, I'm interested in this product:
 
-  ${product.brand}
+  ${product.brand.toUpperCase()}
   ${product.name}
   Price: ₹${product.price}
   ${variantText ? `Options: ${variantText}` : ""}
