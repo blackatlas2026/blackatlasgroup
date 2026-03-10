@@ -19,44 +19,52 @@ export default function ProductsPage() {
   const { name, isSuperadmin } = useAdminRole();
   const router = useRouter();
   const loadMoreRef = useRef(null);
-
+  const fetchingRef = useRef(false);
 
   
 
   const fetchProducts = useCallback(
-    async ({ reset = false, cursor = null } = {}) => {
-      if (loading) return;
+  async ({ reset = false, cursor = null } = {}) => {
+    if (fetchingRef.current) return;
 
-      setLoading(true);
-      setError("");
+    fetchingRef.current = true;
+    setLoading(true);
+    setError("");
 
-      try {
-        const params = new URLSearchParams();
-        params.set("limit", "20");
+    try {
+      const params = new URLSearchParams();
+      params.set("limit", "20");
 
-        if (!reset && cursor) {
-          params.set("cursor", cursor);
-        }
+      if (!reset && cursor) {
+        params.set("cursor", cursor);
+      }
 
-        const res = await fetch(`/api/admin/products/list?${params}`);
-        if (!res.ok) throw new Error("Failed to fetch products");
+      const res = await fetch(`/api/admin/products/list?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch products");
 
-        const data = await res.json();
+      const data = await res.json();
 
-        setProducts(prev =>
-          reset ? data.products : [...prev, ...data.products]
+      setProducts(prev => {
+        const merged = reset ? data.products : [...prev, ...data.products];
+
+        const unique = Array.from(
+          new Map(merged.map(p => [p.id, p])).values()
         );
 
-        setNextCursor(data.nextCursor || null);
-        setHasMore(Boolean(data.hasMore));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [loading]
-  );
+        return unique;
+      });
+
+      setNextCursor(data.nextCursor || null);
+      setHasMore(Boolean(data.hasMore));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      fetchingRef.current = false;
+      setLoading(false);
+    }
+  },
+  []
+);
 
   async function handleDelete() {
     if (!deleteId) return;
@@ -113,11 +121,7 @@ export default function ProductsPage() {
     observer.observe(loadMoreRef.current);
   }
 
-  return () => {
-    if (loadMoreRef.current) {
-      observer.unobserve(loadMoreRef.current);
-    }
-  };
+  return () => observer.disconnect();
 }, [hasMore, loading, nextCursor, fetchProducts]);
 
   return (
