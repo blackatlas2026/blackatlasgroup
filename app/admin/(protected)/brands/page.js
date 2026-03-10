@@ -16,7 +16,7 @@ export default function BrandsPage() {
 
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
   const [storyFormMode, setStoryFormMode] = useState("create");
-
+  //new
   // ✅ Delete states
   const [deleteId, setDeleteId] = useState(null);
   const [deleting, setDeleting] = useState(false);
