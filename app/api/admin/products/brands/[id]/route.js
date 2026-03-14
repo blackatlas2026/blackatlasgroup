@@ -80,15 +80,13 @@ export async function DELETE(req, { params }) {
 
 
 
-
 export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     const data = await request.json();
-    
+
     await updateBrandStory(id, data);
-    console.log("Updated with: ",data);
-    
+
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 400 });

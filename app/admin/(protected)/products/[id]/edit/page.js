@@ -26,6 +26,8 @@ const [existingImages, setExistingImages] = useState([]);
 const [imageFiles, setImageFiles] = useState([]);
 const [newPreviews, setNewPreviews] = useState([]);
 const [mainImageId, setMainImageId] = useState(null);
+const [brandStorySections, setBrandStorySections] = useState([]);
+const [selectedStoryId, setSelectedStoryId] = useState("");
 
  
 
@@ -75,6 +77,7 @@ const [mainImageId, setMainImageId] = useState(null);
       setVariantAttributes(data.variantAttributes || []);
       setExternalLinks(data.externalLinks || []);
       setFacets(data.facets || {});
+      setSelectedStoryId(data.brandStoryId || "");  // ← add this line
       const mainUrl = data.images?.main || null;
       const galleryUrls = data.images?.gallery || [];
 
@@ -140,6 +143,21 @@ const [mainImageId, setMainImageId] = useState(null);
 
     loadSchema();
   }, [form.brand, form.category]);
+
+
+  // Load story sections when brand changes, preserve existing selection
+useEffect(() => {
+  if (!form.brand) {
+    setBrandStorySections([]);
+    setSelectedStoryId("");
+    return;
+  }
+  const brand = brandOptions.find(b => b.id === form.brand);
+  const sections = brand?.storySections || [];
+  setBrandStorySections(sections);
+
+  // Don't reset selectedStoryId here — keep existing selection if brand didn't change
+}, [form.brand, brandOptions]);
 
   function update(key, value) {
     setForm(f => ({ ...f, [key]: value }));
@@ -234,19 +252,17 @@ async function uploadImages(files) {
       body: JSON.stringify({
         ...form,
         price: Number(form.price),
-        images: {
-          main: finalMain,
-          gallery: finalGallery,
-        },
+        images: { main: finalMain, gallery: finalGallery },
         variantAttributes,
         externalLinks,
         facets,
+        brandStoryId: selectedStoryId || null,  // ← add this
       }),
     });
 
     if (!res.ok) throw new Error("Update failed");
 
-    router.push("/admin");
+    router.push("/admin/products");
   } catch (err) {
     alert(err.message);
     setSubmitStatus("idle");
@@ -438,6 +454,69 @@ const allImages = [...oldPreviews, ...newPreviews];
               ))}
           </select>
         )}
+
+
+        {/* Brand Story Section Picker */}
+{form.brand && brandStorySections.length > 0 && (
+  <div className="space-y-3">
+    <p className="text-sm font-semibold text-gray-700">Select Brand Story Section</p>
+    <div className="grid gap-3">
+      {brandStorySections.map(section => {
+        const isSelected = selectedStoryId === section.id;
+        return (
+          <button
+            key={section.id}
+            type="button"
+            onClick={() => setSelectedStoryId(isSelected ? "" : section.id)}
+            className={`text-left p-4 rounded-xl border-2 transition-all ${
+              isSelected
+                ? "border-red-500 bg-red-50"
+                : "border-gray-200 hover:border-gray-300 bg-white"
+            }`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="font-semibold text-gray-800">{section.title || "Untitled Section"}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{section.stories?.length || 0} story items</p>
+                {section.stories?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {section.stories.slice(0, 3).map(story => (
+                      <span key={story.id} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                        {story.title}
+                      </span>
+                    ))}
+                    {section.stories.length > 3 && (
+                      <span className="text-xs text-gray-400">+{section.stories.length - 3} more</span>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center ${
+                isSelected ? "border-red-500 bg-red-500" : "border-gray-300"
+              }`}>
+                {isSelected && <span className="text-white text-xs">✓</span>}
+              </div>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+
+        {selectedStoryId && (
+          <button
+            type="button"
+            onClick={() => setSelectedStoryId("")}
+            className="text-xs text-gray-400 hover:text-gray-600 underline"
+          >
+            Clear selection
+          </button>
+        )}
+      </div>
+    )}
+
+    {form.brand && brandStorySections.length === 0 && (
+      <p className="text-sm text-gray-400 italic">This brand has no story sections yet.</p>
+    )}
 
         
         <input placeholder="Product Name" value={form.name} onChange={e => update("name", e.target.value)} className="input  border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" />

@@ -159,7 +159,11 @@ useEffect(() => {
     e.preventDefault();
     
     // Mark uploads as "committed" - don't cleanup
-    const finalData = { title: sectionTitle, stories: storyItems };
+    const finalData = { 
+      id: initialData?.id || Date.now().toString(),  // preserve existing id or create new
+      title: sectionTitle, 
+      stories: storyItems 
+    };
     setTempUploads([]);  // Clear tracking
     
     try {
