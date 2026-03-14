@@ -175,6 +175,8 @@ export default function BrandsPage() {
     setEditingSection(null);
   };
 
+  
+
   const handleDeleteStorySection = async () => {
     if (!deletingStoryId) return;
     await fetch(`/api/admin/products/brands/${deletingStoryId.brandId}`, {
