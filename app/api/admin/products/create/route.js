@@ -24,21 +24,21 @@ export async function POST(req) {
   
 
 
-  let {
-    slug,
-    brand,
-    category,
-    name,
-    description,
-    price,
-    inStock,
-    featuredProducts,
-
-    images,             // { main, gallery }
-    variantAttributes,  // []
-    externalLinks,      // []
-    facets,
-  } = body;
+ let {
+  slug,
+  brand,
+  category,
+  name,
+  description,
+  price,
+  inStock,
+  featuredProducts,
+  images,
+  variantAttributes,
+  externalLinks,
+  facets,
+  brandStoryId,  // ← add this
+} = body;
 
   if (!slug) {
     slug = generateSlug(name);
@@ -78,6 +78,7 @@ const normalizedProduct = {
   category: category?.trim() || null,
   name: String(name).trim(),
   description: description?.trim() || "",
+  brandStoryId: brandStoryId || null,
   price: Number(price),
   inStock: Boolean(inStock),
   featuredProducts: Boolean(featuredProducts),
