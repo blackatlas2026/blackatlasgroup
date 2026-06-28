@@ -40,7 +40,7 @@ export default function ProductHero({ product }) {
   Please let me know availability.
     `.trim();
 
-    return `https://wa.me/918848378237?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/919961689970?text=${encodeURIComponent(message)}`;
   }
 
 

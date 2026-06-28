@@ -19,7 +19,7 @@ export default function AdminShell({ children }) {
       <div className="flex-1 md:ml-64">
 
         {/* Mobile Top Bar */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b bg-white">
+        <div className="md:hidden flex items-center justify-between p-4 bg-white">
           <button
             onClick={() => setSidebarOpen(true)}
             className="text-xl"
